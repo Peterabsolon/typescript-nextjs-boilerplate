@@ -1,3 +1,5 @@
+require('isomorphic-fetch')
+
 import { useEffect, useState } from 'react'
 import Head from 'next/head'
 
@@ -6,7 +8,7 @@ interface IActivity {
   title: string
 }
 
-function HomePage() {
+export default function HomePage(): JSX.Element {
   const [activities, setActivities] = useState<IActivity[]>([])
 
   useEffect(() => {
@@ -35,8 +37,10 @@ function HomePage() {
       {activities.map((activity) => (
         <div key={activity.id}>{activity.title}</div>
       ))}
+
+      <button type="button" onClick={() => alert('With typescript and Jest')}>
+        Test Button
+      </button>
     </div>
   )
 }
-
-export default HomePage
