@@ -13,7 +13,7 @@ class MyDocument extends Document {
           <meta name='description' content='Track your efforts'></meta>
         </Head>
         <body>
-          Document (CI)
+          Document (CI/CD)
           <Main />
           <NextScript />
         </body>
