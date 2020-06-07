@@ -1,3 +1,5 @@
+/// <reference types="jest" />
+
 // @ts-ignore
 // eslint-disable-next-line
 import HomePage from './'
