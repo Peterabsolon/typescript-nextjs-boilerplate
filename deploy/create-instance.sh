@@ -12,3 +12,8 @@ gcloud compute instances create "mvp-app" \
     --metadata=enable-oslogin="TRUE" \
     --no-service-account --no-scopes \
     --tags "app"
+
+gcloud compute instances add-iam-policy-binding mvp-app \
+    --zone europe-west3-a \
+    --member serviceAccount:ssh-master-account@mvp-api-254102.iam.gserviceaccount.com \
+    --role roles/compute.osAdminLogin

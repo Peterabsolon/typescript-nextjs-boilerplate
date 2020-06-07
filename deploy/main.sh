@@ -8,8 +8,8 @@ sudo apt-get update -y
 
 ./scripts/install-docker.sh
 
-# ./scripts/install-nginx.sh
+./scripts/install-nginx.sh
 
-# sudo mv nginx.conf /etc/nginx/
+sudo mv nginx.conf /etc/nginx/
 
-# sudo nginx
+./scripts/install-https.sh
