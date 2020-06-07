@@ -1,12 +1,17 @@
 import { useEffect, useState } from 'react'
 import Head from 'next/head'
 
+interface IActivity {
+  id: string
+  title: string
+}
+
 function HomePage() {
-  const [activities, setActivities] = useState([])
+  const [activities, setActivities] = useState<IActivity[]>([])
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      const data = window
+      window
         .fetch('https://api.efforts.app/graphql', {
           method: 'POST',
           headers: {
