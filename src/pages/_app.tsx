@@ -5,10 +5,6 @@ import { ReactNode } from 'react'
 //   console.log(metric)
 // }
 
-interface IAnyObject {
-  [key: string]: any
-}
-
 export default function MyApp({ Component, pageProps }: IAnyObject): ReactNode {
   return <Component {...pageProps} />
 }

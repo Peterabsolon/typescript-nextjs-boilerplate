@@ -14,6 +14,23 @@ export default function HomePage(): JSX.Element {
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
+      if ('serviceWorker' in navigator && (window as any).workbox !== undefined) {
+        // @ts-ignore
+        window.workbox.addEventListener('waiting', () => {
+          if (confirm('A new version is installed, reload to use the new version immediately?')) {
+            // @ts-ignore
+            window.workbox.addEventListener('controlling', () => {
+              window.location.reload()
+            })
+
+            // @ts-ignore
+            window.workbox.messageSW({ type: 'SKIP_WAITING' })
+          } else {
+            // User rejected, new verion will be automatically load when user open the app next time.
+          }
+        })
+      }
+
       window
         .fetch('https://api.efforts.app/graphql', {
           method: 'POST',
@@ -32,7 +49,7 @@ export default function HomePage(): JSX.Element {
   return (
     <Wrapper>
       <Head>
-        <title>My new cool app</title>
+        <title>Efforts</title>
       </Head>
 
       {activities.map((activity) => (
