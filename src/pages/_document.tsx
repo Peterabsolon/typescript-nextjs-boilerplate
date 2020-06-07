@@ -20,7 +20,7 @@ export default class MyDocument extends Document {
           <meta name="description" content="Track your efforts"></meta>
         </Head>
         <body>
-          Document (CI/CD)
+          Document (CI/CD + SW)
           <Main />
           <NextScript />
         </body>
