@@ -25,7 +25,7 @@ export default function HomePage(): JSX.Element {
           // @ts-ignore
           window.workbox.addEventListener('waiting', () => {
             // eslint-disable-next-line
-            console.log('event - waiting')
+            console.log('event - waiting yo')
 
             if (confirm('A new version is installed, reload to use the new version immediately?')) {
               // @ts-ignore
