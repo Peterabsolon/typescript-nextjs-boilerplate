@@ -8,9 +8,9 @@ class MyDocument extends Document {
 
   render() {
     return (
-      <Html lang='en'>
+      <Html lang="en">
         <Head>
-          <meta name='description' content='Track your efforts'></meta>
+          <meta name="description" content="Track your efforts"></meta>
         </Head>
         <body>
           Document (CI/CD)

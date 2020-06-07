@@ -3,7 +3,7 @@ WORKDIR /usr/src/app
 
 ENV YARN_CACHE_FOLDER=/tmp/cache
 
-COPY package.json yarn.lock tsconfig.json next-env.d.ts src ./
+COPY . .
 
 RUN yarn
 RUN yarn test
