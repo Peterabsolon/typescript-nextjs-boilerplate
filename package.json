@@ -21,6 +21,12 @@
       "pre-push": "yarn run ts:check"
     }
   },
+  "lint-staged": {
+    "*.@(ts|tsx)": [
+      "yarn lint",
+      "yarn format"
+    ]
+  },
   "dependencies": {
     "next": "^9.4.4",
     "react": "^16.13.1",
