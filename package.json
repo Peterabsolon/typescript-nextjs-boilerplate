@@ -1,0 +1,19 @@
+{
+  "name": "mvp-app",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "dev": "next",
+    "build": "next build && next export",
+    "start": "next start",
+    "test": "echo 'Test'...",
+    "serve": "serve -s out -p 8080"
+  },
+  "dependencies": {
+    "next": "^9.4.4",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "serve": "^11.3.2"
+  }
+}

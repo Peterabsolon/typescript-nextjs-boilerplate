@@ -1,0 +1,12 @@
+{
+  "name": "mvp-app-server",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "serve": "serve -s out -p 8080"
+  },
+  "dependencies": {
+    "serve": "^11.3.2"
+  }
+}

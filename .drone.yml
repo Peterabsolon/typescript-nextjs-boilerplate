@@ -1,0 +1,71 @@
+kind: pipeline
+type: docker
+name: default
+
+steps:
+  - name: Restore cache
+    image: meltwater/drone-cache
+    pull: true
+    settings:
+      backend: 'filesystem'
+      restore: true
+      cache_key: 'volume'
+      archive_format: 'gzip'
+      mount:
+        - 'vendor'
+    volumes:
+      - name: cache
+        path: /tmp/cache
+
+  - name: Test & Build
+    image: docker:stable-dind
+    volumes:
+      - name: docker_socket
+        path: /var/run/docker.sock
+    environment:
+      DOCKER_USER:
+        from_secret: DOCKER_USER
+      DOCKER_PASS:
+        from_secret: DOCKER_PASS
+    commands:
+      - docker build -t $DOCKER_USER/mvp-app:$DRONE_BUILD_NUMBER .
+      - docker login -u $DOCKER_USER -p $DOCKER_PASS
+      - docker push $DOCKER_USER/mvp-app:$DRONE_BUILD_NUMBER
+    when:
+      status: [success]
+
+  - name: Deploy
+    image: peterabsolon/build-server:v0.1.33
+    environment:
+      HOSTNAME: '35.242.233.228'
+    commands:
+      - /usr/local/drone_build_scripts/mvp-app/deploy.sh
+    when:
+      status: [success]
+
+  - name: Rebuild cache
+    image: meltwater/drone-cache
+    pull: true
+    settings:
+      backend: 'filesystem'
+      rebuild: true
+      cache_key: 'volume'
+      archive_format: 'gzip'
+      mount:
+        - 'vendor'
+    volumes:
+      - name: cache
+        path: /tmp/cache
+
+services:
+  - name: docker
+    image: docker:stable-dind
+    privileged: true
+
+volumes:
+  - name: cache
+    host:
+      path: /tmp/cache
+  - name: docker_socket
+    host:
+      path: /var/run/docker.sock
