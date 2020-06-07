@@ -14,21 +14,35 @@ export default function HomePage(): JSX.Element {
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      if ('serviceWorker' in navigator && (window as any).workbox !== undefined) {
-        // @ts-ignore
-        window.workbox.addEventListener('waiting', () => {
-          if (confirm('A new version is installed, reload to use the new version immediately?')) {
-            // @ts-ignore
-            window.workbox.addEventListener('controlling', () => {
-              window.location.reload()
-            })
+      if ('serviceWorker' in navigator) {
+        // eslint-disable-next-line
+        console.log('has service worker')
 
-            // @ts-ignore
-            window.workbox.messageSW({ type: 'SKIP_WAITING' })
-          } else {
-            // User rejected, new verion will be automatically load when user open the app next time.
-          }
-        })
+        if ((window as any).workbox !== undefined) {
+          // eslint-disable-next-line
+          console.log('has workbox')
+
+          // @ts-ignore
+          window.workbox.addEventListener('waiting', () => {
+            // eslint-disable-next-line
+            console.log('event - waiting')
+
+            if (confirm('A new version is installed, reload to use the new version immediately?')) {
+              // @ts-ignore
+              window.workbox.addEventListener('controlling', () => {
+                // eslint-disable-next-line
+                console.log('event - controlling')
+
+                window.location.reload()
+              })
+
+              // @ts-ignore
+              window.workbox.messageSW({ type: 'SKIP_WAITING' })
+            } else {
+              // User rejected, new verion will be automatically load when user open the app next time.
+            }
+          })
+        }
       }
 
       window
