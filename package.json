@@ -4,7 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "dev": "next & yarn ts:watch",
+    "dev": "next",
     "build": "next build && next export",
     "start": "next start",
     "test": "echo 'Test'...",
