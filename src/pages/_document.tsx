@@ -17,10 +17,10 @@ export default class MyDocument extends Document {
     return (
       <Html lang="en">
         <Head>
-          <meta name="description" content="Track your efforts"></meta>
+          <meta name="description" content="Next.js, MobX, GraphQL, styled-components"></meta>
         </Head>
+
         <body>
-          Document (CI/CD + SW)
           <Main />
           <NextScript />
         </body>

@@ -4,74 +4,52 @@ import { useEffect, useState } from 'react'
 import Head from 'next/head'
 import styled from 'styled-components'
 
-interface IActivity {
-  id: string
-  title: string
+const API_URL = 'https://cat-fact.herokuapp.com'
+
+interface IFact {
+  _id: string
+  text: string
 }
 
 export default function HomePage(): JSX.Element {
-  const [activities, setActivities] = useState<IActivity[]>([])
+  const [facts, setFacts] = useState<IFact[]>([])
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      if ('serviceWorker' in navigator) {
-        // eslint-disable-next-line
-        console.log('has service worker')
+    fetchFacts()
+  }, [])
 
-        if ((window as any).workbox !== undefined) {
-          // eslint-disable-next-line
-          console.log('has workbox')
-
-          // @ts-ignore
-          window.workbox.addEventListener('waiting', () => {
-            // eslint-disable-next-line
-            console.log('event - waiting yo')
-
-            if (confirm('A new version is installed, reload to use the new version immediately?')) {
-              // @ts-ignore
-              window.workbox.addEventListener('controlling', () => {
-                // eslint-disable-next-line
-                console.log('event - controlling')
-
-                window.location.reload()
-              })
-
-              // @ts-ignore
-              window.workbox.messageSW({ type: 'SKIP_WAITING' })
-            } else {
-              // User rejected, new verion will be automatically load when user open the app next time.
-            }
-          })
-        }
-      }
+  const fetchFacts = () => {
+    if (window) {
+      setLoading(true)
 
       window
-        .fetch('https://api.efforts.app/graphql', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            query: 'query activities {  activities {    id    title  }}',
-          }),
+        .fetch(`${API_URL}/facts/random?amount=3`, {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json' },
         })
         .then((res) => res.json())
-        .then((data) => setActivities(data.data.activities))
+        .then((data) => {
+          setFacts(data)
+          setLoading(false)
+        })
     }
-  }, [])
+  }
 
   return (
     <Wrapper>
       <Head>
-        <title>Efforts</title>
+        <title>My awesome boilerplate</title>
       </Head>
 
-      {activities.map((activity) => (
-        <div key={activity.id}>{activity.title}</div>
+      <h2>Random cat facts</h2>
+
+      {facts.map((fact) => (
+        <Fact key={fact._id}>{fact.text}</Fact>
       ))}
 
-      <button type="button" onClick={() => alert('With typescript and Jest')}>
-        Test Button
+      <button type="button" onClick={fetchFacts}>
+        {loading ? 'Fetching...' : 'I want moar'}
       </button>
     </Wrapper>
   )
@@ -79,5 +57,11 @@ export default function HomePage(): JSX.Element {
 
 const Wrapper = styled.div`
   padding: 16px;
-  background: #ddd;
+`
+
+const Fact = styled.div`
+  margin-bottom: 15px;
+  width: 400px;
+  border: 1px solid #ccc;
+  padding: 4px;
 `
