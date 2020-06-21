@@ -17,7 +17,7 @@ export default class MyDocument extends Document {
     return (
       <Html lang="en">
         <Head>
-          <meta name="description" content="Next.js, MobX, GraphQL, styled-components"></meta>
+          <meta name="description" content="Next.js, MobX, GraphQL, styled-components" />
         </Head>
 
         <body>

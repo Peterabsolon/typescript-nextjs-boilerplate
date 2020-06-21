@@ -1,1 +1,3 @@
-export { default } from '../containers/index'
+import { HomePage } from '../containers'
+
+export default HomePage

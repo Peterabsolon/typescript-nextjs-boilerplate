@@ -1,8 +1,8 @@
-require('isomorphic-fetch')
-
 import { useEffect, useState } from 'react'
 import Head from 'next/head'
 import styled from 'styled-components'
+
+require('isomorphic-fetch')
 
 const API_URL = 'https://cat-fact.herokuapp.com'
 
@@ -11,13 +11,9 @@ interface IFact {
   text: string
 }
 
-export default function HomePage(): JSX.Element {
+function HomePage(): JSX.Element {
   const [facts, setFacts] = useState<IFact[]>([])
   const [loading, setLoading] = useState(false)
-
-  useEffect(() => {
-    fetchFacts()
-  }, [])
 
   const fetchFacts = () => {
     if (window) {
@@ -36,6 +32,10 @@ export default function HomePage(): JSX.Element {
     }
   }
 
+  useEffect(() => {
+    fetchFacts()
+  }, [])
+
   return (
     <Wrapper>
       <Head>
@@ -49,7 +49,7 @@ export default function HomePage(): JSX.Element {
       ))}
 
       <button type="button" onClick={fetchFacts}>
-        {loading ? 'Fetching...' : 'I want moar'}
+        {loading ? 'Fetching...' : 'I can haz moar?'}
       </button>
     </Wrapper>
   )
@@ -65,3 +65,5 @@ const Fact = styled.div`
   border: 1px solid #ccc;
   padding: 4px;
 `
+
+export { HomePage }
