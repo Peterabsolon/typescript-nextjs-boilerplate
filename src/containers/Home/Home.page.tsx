@@ -3,11 +3,13 @@ import Head from 'next/head'
 import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 
-import { Button } from '../../components'
+import { Heading, Button } from '../../components'
 import { useStore } from '../../store'
 
 const Wrapper = styled.div`
-  padding: 16px;
+  padding: 20px;
+  min-height: 100vh;
+  box-sizing: border-box;
 `
 
 const Fact = styled.div`
@@ -15,31 +17,43 @@ const Fact = styled.div`
   width: 400px;
   border: 1px solid #ccc;
   padding: 4px;
+  color: ${(props) => props.theme.colors.text};
 `
 
 function HomePage(): JSX.Element {
-  const { facts, fetchFacts, loading } = useStore()
+  const { facts, fetchFacts, factsLoading, switchTheme } = useStore()
 
   useEffect(() => {
     fetchFacts()
   }, [])
 
   return (
-    <Wrapper>
+    <>
       <Head>
         <title>My awesome boilerplate</title>
       </Head>
 
-      <h2>Random cat facts</h2>
+      <Wrapper>
+        <Heading fontSize={40} mb={24} color="primary">
+          Random cat facts
+        </Heading>
 
-      <Button type="button" variant="primary" onClick={fetchFacts}>
-        {loading ? 'Fetching...' : 'I can haz moar?'}
-      </Button>
+        <Button type="button" variant="secondary" onClick={switchTheme}>
+          Dark mode
+        </Button>
 
-      {facts.map((fact) => (
-        <Fact key={fact._id}>{fact.text}</Fact>
-      ))}
-    </Wrapper>
+        <br />
+        <br />
+
+        <Button type="button" variant="primary" onClick={fetchFacts}>
+          {factsLoading ? 'Loading...' : 'Fetch more'}
+        </Button>
+
+        {facts.map((fact) => (
+          <Fact key={fact._id}>{fact.text}</Fact>
+        ))}
+      </Wrapper>
+    </>
   )
 }
 

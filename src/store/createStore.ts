@@ -1,5 +1,11 @@
-import { action, makeAutoObservable } from 'mobx'
+import { action, makeAutoObservable, configure } from 'mobx'
 import { createContext, useContext } from 'react'
+
+import { Theme } from '../constants'
+
+configure({
+  enforceActions: 'never',
+})
 
 const API_URL = 'https://cat-fact.herokuapp.com'
 
@@ -10,31 +16,29 @@ interface Fact {
 
 class AppStore {
   facts: Fact[] = []
+  factsLoading = false
 
-  loading = false
+  theme: Theme = 'light'
 
   constructor() {
     makeAutoObservable(this)
   }
 
-  @action setLoading = (loading: boolean) => {
-    this.loading = loading
-  }
-
-  @action setFacts = (facts: Fact[]) => {
-    this.facts = facts
-  }
-
   @action fetchFacts = async () => {
-    this.setLoading(true)
+    if (this.factsLoading) return
+    this.factsLoading = true
 
     const res = await window.fetch(`${API_URL}/facts/random?amount=3`, {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
     })
 
-    this.setFacts(await res.json())
-    this.setLoading(false)
+    this.facts = await res.json()
+    this.factsLoading = false
+  }
+
+  @action switchTheme = () => {
+    this.theme = this.theme === 'light' ? 'dark' : 'light'
   }
 }
 
