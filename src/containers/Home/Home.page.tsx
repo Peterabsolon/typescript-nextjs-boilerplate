@@ -1,9 +1,10 @@
-import { ReactElement, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import Head from 'next/head'
 import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 
-import { useStore } from '../store'
+import { Button } from '../../components'
+import { useStore } from '../../store'
 
 const Wrapper = styled.div`
   padding: 16px;
@@ -16,7 +17,7 @@ const Fact = styled.div`
   padding: 4px;
 `
 
-function HomePageComp(): ReactElement {
+function HomePage(): JSX.Element {
   const { facts, fetchFacts, loading } = useStore()
 
   useEffect(() => {
@@ -31,9 +32,9 @@ function HomePageComp(): ReactElement {
 
       <h2>Random cat facts</h2>
 
-      <button type="button" onClick={fetchFacts}>
+      <Button type="button" variant="primary" onClick={fetchFacts}>
         {loading ? 'Fetching...' : 'I can haz moar?'}
-      </button>
+      </Button>
 
       {facts.map((fact) => (
         <Fact key={fact._id}>{fact.text}</Fact>
@@ -42,6 +43,4 @@ function HomePageComp(): ReactElement {
   )
 }
 
-const HomePage = observer(HomePageComp)
-
-export { HomePage }
+export default observer(HomePage)
