@@ -1,54 +1,18 @@
-import { action, makeAutoObservable, configure } from 'mobx'
+import { configure } from 'mobx'
 import { createContext, useContext } from 'react'
 
-import { Theme } from '../constants'
+import { HomeStore } from '../containers/Home'
 
-configure({
-  enforceActions: 'never',
-})
-
-const API_URL = 'https://cat-fact.herokuapp.com'
-
-interface Fact {
-  _id: string
-  text: string
-}
+configure({ enforceActions: 'never' })
 
 class AppStore {
-  facts: Fact[] = []
-  factsLoading = false
-
-  theme: Theme = 'light'
-
-  constructor() {
-    makeAutoObservable(this)
-  }
-
-  @action fetchFacts = async () => {
-    if (this.factsLoading) return
-    this.factsLoading = true
-
-    const res = await window.fetch(`${API_URL}/facts/random?amount=3`, {
-      method: 'GET',
-      headers: { 'Content-Type': 'application/json' },
-    })
-
-    this.facts = await res.json()
-    this.factsLoading = false
-  }
-
-  @action switchTheme = () => {
-    this.theme = this.theme === 'light' ? 'dark' : 'light'
-  }
+  HomeStore = new HomeStore()
 }
 
 let store: AppStore
 
 export function createStore(): AppStore {
-  if (store) {
-    return store
-  }
-
+  if (store) return store
   store = new AppStore()
   return store
 }

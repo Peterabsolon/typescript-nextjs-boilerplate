@@ -8,6 +8,8 @@ import Document, {
   DocumentContext,
 } from 'next/document'
 
+import { APP_DESCRIPTION, APP_NAME } from '../constants/app'
+
 export default class MyDocument extends Document {
   static async getInitialProps(ctx: DocumentContext): Promise<DocumentInitialProps> {
     const initialProps = await Document.getInitialProps(ctx)
@@ -18,7 +20,8 @@ export default class MyDocument extends Document {
     return (
       <Html lang="en">
         <Head>
-          <meta name="description" content="Next.js, MobX, GraphQL, styled-components" />
+          <meta name="title" content={APP_NAME} />
+          <meta name="description" content={APP_DESCRIPTION} />
         </Head>
 
         <body>

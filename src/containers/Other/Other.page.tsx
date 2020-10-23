@@ -2,11 +2,11 @@ import { ReactElement } from 'react'
 import Head from 'next/head'
 import { observer } from 'mobx-react-lite'
 
-import { Box } from '../../components'
+import { Box, Page } from '../../components'
 
 function OtherPage(): ReactElement {
   return (
-    <div>
+    <Page>
       <Head>
         <title>Other page - My awesome boilerplate</title>
       </Head>
@@ -15,7 +15,7 @@ function OtherPage(): ReactElement {
         <div>Foo</div>
         <div>Bar</div>
       </Box>
-    </div>
+    </Page>
   )
 }
 

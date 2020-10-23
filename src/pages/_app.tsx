@@ -3,6 +3,7 @@ require('isomorphic-fetch')
 /* eslint-disable import/first */
 import React from 'react'
 import { AppProps } from 'next/app'
+import { PageTransition } from 'next-page-transitions'
 import { observer } from 'mobx-react-lite'
 import { ThemeProvider } from 'emotion-theming'
 import { createGlobalStyle, ThemeProvider as StyledThemeProvider } from 'styled-components'
@@ -28,9 +29,9 @@ export function reportWebVitals(metric: unknown): void {
 
 createStore()
 
-function MyApp({ Component, pageProps }: AppProps): JSX.Element {
+function MyApp({ Component, pageProps, router }: AppProps): JSX.Element {
   const store = useStore()
-  const theme = themes[store.theme]
+  const theme = themes[store.HomeStore.theme]
 
   return (
     <>
@@ -38,9 +39,27 @@ function MyApp({ Component, pageProps }: AppProps): JSX.Element {
       <GlobalStyle />
       <ThemeProvider theme={theme}>
         <StyledThemeProvider theme={theme}>
-          <div style={{ background: theme.colors.background }}>
-            <Component {...pageProps} />
-          </div>
+          <PageTransition timeout={100} classNames="page-transition">
+            <Component {...pageProps} key={router.route} />
+          </PageTransition>
+          <style jsx global>
+            {`
+              .page-transition-enter {
+                opacity: 0;
+              }
+              .page-transition-enter-active {
+                opacity: 1;
+                transition: opacity 100ms;
+              }
+              .page-transition-exit {
+                opacity: 1;
+              }
+              .page-transition-exit-active {
+                opacity: 0;
+                transition: opacity 100ms;
+              }
+            `}
+          </style>
         </StyledThemeProvider>
       </ThemeProvider>
     </>

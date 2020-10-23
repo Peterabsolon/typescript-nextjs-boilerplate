@@ -24,6 +24,7 @@ export const themes: { [key in Theme]: IAnyObject } = {
     colors: {
       background: 'black',
       primary: 'aqua',
+      secondary: '#aaa',
       text: '#fff',
     },
   },
