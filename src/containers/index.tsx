@@ -1,36 +1,23 @@
-import { useEffect, useState } from 'react'
+import { ReactElement, useEffect } from 'react'
 import Head from 'next/head'
+import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 
-require('isomorphic-fetch')
+import { useStore } from '../store'
 
-const API_URL = 'https://cat-fact.herokuapp.com'
+const Wrapper = styled.div`
+  padding: 16px;
+`
 
-interface IFact {
-  _id: string
-  text: string
-}
+const Fact = styled.div`
+  margin-top: 15px;
+  width: 400px;
+  border: 1px solid #ccc;
+  padding: 4px;
+`
 
-function HomePage(): JSX.Element {
-  const [facts, setFacts] = useState<IFact[]>([])
-  const [loading, setLoading] = useState(false)
-
-  const fetchFacts = () => {
-    if (window) {
-      setLoading(true)
-
-      window
-        .fetch(`${API_URL}/facts/random?amount=3`, {
-          method: 'GET',
-          headers: { 'Content-Type': 'application/json' },
-        })
-        .then((res) => res.json())
-        .then((data) => {
-          setFacts(data)
-          setLoading(false)
-        })
-    }
-  }
+function HomePageComp(): ReactElement {
+  const { facts, fetchFacts, loading } = useStore()
 
   useEffect(() => {
     fetchFacts()
@@ -44,26 +31,17 @@ function HomePage(): JSX.Element {
 
       <h2>Random cat facts</h2>
 
-      {facts.map((fact) => (
-        <Fact key={fact._id}>{fact.text}</Fact>
-      ))}
-
       <button type="button" onClick={fetchFacts}>
         {loading ? 'Fetching...' : 'I can haz moar?'}
       </button>
+
+      {facts.map((fact) => (
+        <Fact key={fact._id}>{fact.text}</Fact>
+      ))}
     </Wrapper>
   )
 }
 
-const Wrapper = styled.div`
-  padding: 16px;
-`
-
-const Fact = styled.div`
-  margin-bottom: 15px;
-  width: 400px;
-  border: 1px solid #ccc;
-  padding: 4px;
-`
+const HomePage = observer(HomePageComp)
 
 export { HomePage }
