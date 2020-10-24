@@ -14,13 +14,13 @@
     "cy:open": "cypress open",
     "cy:run": "cypress run",
     "test": "jest",
-    "health-check": "yarn lint && yarn ts:check && yarn test && yarn cy:run",
+    "health-check": "yarn lint && yarn ts:check && yarn cy:run",
     "codegen": "graphql-codegen --config codegen.yml"
   },
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged",
-      "pre-push": "yarn run ts:check"
+      "pre-push": "yarn health-check"
     }
   },
   "lint-staged": {
