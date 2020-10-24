@@ -11,12 +11,12 @@ import { Reset as StyledReset } from 'styled-reset'
 import { createStore, useStore } from '~/store'
 import { App as AppComponent } from '~/components/app'
 
-// Perf debug
-export function reportWebVitals(metric: unknown): void {
-  if (process.env.PERF_DEBUG) {
-    console.log(metric)
-  }
-}
+// For perf debug
+// export function reportWebVitals(metric: unknown): void {
+//   if (process.env.PERF_DEBUG) {
+//     console.log(metric)
+//   }
+// }
 
 createStore()
 
@@ -26,11 +26,11 @@ function MyApp(appProps: AppProps): JSX.Element {
   return (
     <>
       <StyledReset />
-      <ThemeProvider theme={theme}>
-        <StyledThemeProvider theme={theme}>
+      <StyledThemeProvider theme={theme}>
+        <ThemeProvider theme={theme}>
           <AppComponent {...appProps} />
-        </StyledThemeProvider>
-      </ThemeProvider>
+        </ThemeProvider>
+      </StyledThemeProvider>
     </>
   )
 }

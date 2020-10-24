@@ -63,10 +63,13 @@ const Content = styled.div`
 `
 
 const HeaderContent = styled(Content)`
+  height: ${HEADER_HEIGHT}px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: ${HEADER_HEIGHT}px;
+  > * {
+    flex: 1 1 0;
+  }
 `
 
 const PageContent = styled(Content)`
@@ -99,7 +102,7 @@ export const App: FC<AppProps> = observer(({ Component, pageProps, router }) => 
             {APP_NAME}
           </Heading>
 
-          <Flex>
+          <Flex justifyContent="center">
             {keys(RouteEnum).map((key) => {
               const href = RouteEnum[key]
 
@@ -111,7 +114,7 @@ export const App: FC<AppProps> = observer(({ Component, pageProps, router }) => 
             })}
           </Flex>
 
-          <Flex>
+          <Flex justifyContent="flex-end">
             <Button onClick={toggleTheme} variant="outline" mr={2}>
               {themeKey === 'light' ? 'Dark' : 'Light'} mode
             </Button>

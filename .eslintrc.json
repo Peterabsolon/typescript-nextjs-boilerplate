@@ -1,13 +1,14 @@
 {
   "parser": "@typescript-eslint/parser",
-  "plugins": ["@typescript-eslint"],
+  "plugins": ["@typescript-eslint", "cypress"],
   "extends": [
     "eslint:recommended",
     "plugin:react/recommended",
     "plugin:@typescript-eslint/recommended",
     "airbnb",
     "prettier",
-    "prettier/@typescript-eslint"
+    "prettier/@typescript-eslint",
+    "plugin:cypress/recommended"
   ],
   "env": {
     "es6": true,
@@ -49,5 +50,5 @@
     "react/jsx-props-no-spreading": 0,
     "react/jsx-one-expression-per-line": 0
   },
-  "ignorePatterns": "**/generated/**"
+  "ignorePatterns": ["**/generated/**", "**/*.js"]
 }
