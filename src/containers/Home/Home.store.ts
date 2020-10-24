@@ -1,6 +1,6 @@
 import { action, makeAutoObservable } from 'mobx'
 
-import { Theme, themes } from '~/constants'
+import { ThemeKey, themes } from '~/constants'
 
 interface Fact {
   _id: string
@@ -18,13 +18,13 @@ export class HomeStore {
   factsFetching = false
   factsFetched = false
 
-  themeKey: Theme = 'dark'
+  themeKey: ThemeKey = 'dark'
 
   constructor() {
     makeAutoObservable(this)
   }
 
-  get theme(): IAnyObject {
+  get theme(): Theme {
     return themes[this.themeKey]
   }
 
@@ -37,8 +37,9 @@ export class HomeStore {
 
     try {
       const res = await window.fetch(`${API_URL}/facts/random?amount=3`, GET_HEADERS)
+      const facts = await res.json()
 
-      this.facts = await res.json()
+      this.facts = facts
       this.factsFetched = true
     } catch (error) {
       console.error(error)

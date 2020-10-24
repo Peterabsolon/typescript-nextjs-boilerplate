@@ -1,9 +1,10 @@
 // @ts-ignore
 import defaults from '@rebass/preset'
 
-export type Theme = 'light' | 'dark'
+export type ThemeKey = 'light' | 'dark'
 
-export const themes: { [key in Theme]: IAnyObject } = {
+// Theme interface has to be defined in custom.d.ts in order for styled-components to pick it up
+export const themes: { [key in ThemeKey]: Theme } = {
   // ====================================================
   // Light
   // ====================================================
@@ -12,9 +13,12 @@ export const themes: { [key in Theme]: IAnyObject } = {
     colors: {
       ...defaults.colors,
       background: 'white',
-      backgroundDark: '#eee',
+      backgroundDark: '#efefef',
       primary: '#14b5f5',
+      secondary: '#74d3f9',
       text: '#333',
+      focusOutline: 'black',
+      focusOutlineAlt: 'white',
     },
   },
 
@@ -30,6 +34,8 @@ export const themes: { [key in Theme]: IAnyObject } = {
       primary: '#74d3f9',
       secondary: '#fff',
       text: '#fff',
+      focusOutline: 'black',
+      focusOutlineAlt: 'white',
     },
   },
 }

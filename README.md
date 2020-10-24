@@ -7,7 +7,7 @@
 - MobX
 - GraphQL
 - styled-components
-- rebass for UI primitives
+- rebass (UI primitives)
 
 ## Extra
 

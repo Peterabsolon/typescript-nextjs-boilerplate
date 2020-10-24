@@ -1,16 +1,16 @@
 import { FC } from 'react'
 import NextLink from 'next/link'
 import { observer } from 'mobx-react-lite'
-import { Link as LinkComponent } from 'rebass'
+import { Link as RebassLink } from 'rebass'
 
 interface LinkProps {
-  to: string
+  href: string
 }
 
-export const Link: FC<LinkProps> = observer(({ to, children }) => {
+export const Link: FC<LinkProps> = observer(({ href, children }) => {
   return (
-    <NextLink href={to}>
-      <LinkComponent href={to}>{children}</LinkComponent>
+    <NextLink href={href}>
+      <RebassLink href={href}>{children}</RebassLink>
     </NextLink>
   )
 })

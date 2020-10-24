@@ -2,7 +2,7 @@ import React, { FC, useEffect } from 'react'
 import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 
-import { Button, Heading, Text } from '~/components'
+import { Box, Button, Flex, Heading, Text } from '~/components'
 import { useStore } from '~/store'
 
 const Fact = styled.div`
@@ -20,20 +20,30 @@ export const HomePage: FC = observer(() => {
 
   return (
     <>
-      <div>
-        <Heading color="primary">Todo</Heading>
-        <Text mt={2}>- GraphQL</Text>
-        <Text mt={2}>- Cyclic import check</Text>
-        <Text mt={2}>- Cyclic import check</Text>
-      </div>
+      <Flex>
+        <Box>
+          <div>
+            <Heading color="primary">Todo</Heading>
+            <Text mt={2}>- GraphQL</Text>
+            <Text mt={2}>- Axios</Text>
+            <Text mt={2}>- Cyclic import check</Text>
+            <Text mt={2}>- Mockserver</Text>
+            <Text mt={2}>- Styled theme type</Text>
+          </div>
 
-      <Button type="button" mt={4} variant="primary" onClick={fetchFacts}>
-        {factsFetching ? 'Loading...' : 'Fetch more'}
-      </Button>
+          <Button type="button" mt={3} onClick={fetchFacts} width={150} variant="primary" mr={2}>
+            {factsFetching ? 'Fetching' : 'Fetch request'}
+          </Button>
 
-      {facts.map((fact) => (
-        <Fact key={fact._id}>{fact.text}</Fact>
-      ))}
+          <Button type="button" mt={3} onClick={fetchFacts} width={150} variant="secondary">
+            {factsFetching ? 'Fetching' : 'Fetch request'}
+          </Button>
+
+          {facts.map((fact) => (
+            <Fact key={fact._id}>{fact.text}</Fact>
+          ))}
+        </Box>
+      </Flex>
     </>
   )
 })
