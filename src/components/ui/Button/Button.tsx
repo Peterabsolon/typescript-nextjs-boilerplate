@@ -20,6 +20,11 @@ const StyledRebassButton = styled(RebassButton)`
         }
       `}
 
+      ${props.disabled &&
+      css`
+        opacity: 0.7;
+      `}
+
       ${props.variant === 'outline' &&
       css`
         // use solid border instead of shadow

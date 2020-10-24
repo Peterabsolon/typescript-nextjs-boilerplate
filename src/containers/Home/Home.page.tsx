@@ -2,7 +2,7 @@ import React, { FC, useEffect } from 'react'
 import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 
-import { Box, Button, Flex, Heading, Text, Input } from '~/components'
+import { Box, Button, Flex, Heading, Input } from '~/components'
 import { useStore } from '~/store'
 
 const Fact = styled.div`
@@ -22,6 +22,7 @@ export const HomePage: FC = observer(() => {
     mountPage,
     setCity,
     weather,
+    weatherFetching,
   } = useStore().pages.HomeStore
 
   useEffect(mountPage, [])
@@ -30,12 +31,9 @@ export const HomePage: FC = observer(() => {
     <>
       <Flex>
         <Box>
-          <div>
-            <Heading color="primary" mb={2}>
-              Todo
-            </Heading>
-            <Text>- Mockserver</Text>
-          </div>
+          <Heading color="primary" mb={2}>
+            Cat facts
+          </Heading>
 
           <Button
             type="button"
@@ -46,7 +44,7 @@ export const HomePage: FC = observer(() => {
             mt={3}
             mr={2}
           >
-            {factsFetching ? 'Fetching' : 'Fetch request'}
+            {factsFetching ? 'Fetching' : 'Fetch'}
           </Button>
 
           {facts.map((fact) => (
@@ -60,9 +58,17 @@ export const HomePage: FC = observer(() => {
           </Heading>
 
           <div>
+            <Button
+              onClick={fetchWeather}
+              disabled={weatherFetching || !city}
+              width={150}
+              mt={3}
+              mr={3}
+            >
+              {weatherFetching ? 'Fetching' : 'Fetch'}
+            </Button>
             City{` `}
             <Input value={city} onChange={setCity} />
-            <Button onClick={fetchWeather}>Fetch weather</Button>
           </div>
 
           <Box mt={3}>{weather?.weather.summary.description}</Box>
