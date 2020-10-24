@@ -1,7 +1,7 @@
 {
-  "name": "mvp-app",
+  "name": "typescript-nextjs-boilerplate",
   "version": "1.0.0",
-  "main": "index.js",
+  "author": "Peter Absolon <peterabsolon@yahoo.com>",
   "license": "MIT",
   "scripts": {
     "dev": "next",
