@@ -6,6 +6,5 @@ export * from 'rebass'
 
 // UI
 export * from './ui/Banner'
-export * from './ui/Page'
 
 // Domain specific

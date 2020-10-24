@@ -1,2 +1,2 @@
-export const APP_NAME = 'Cat facts'
-export const APP_DESCRIPTION = 'Random cat facts generator'
+export const APP_NAME = 'Amazing boilerplate'
+export const APP_DESCRIPTION = 'TS, Next, MobX'
