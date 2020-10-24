@@ -28,7 +28,6 @@ export const HomePage: FC = observer(() => {
             <Text mt={2}>- Axios</Text>
             <Text mt={2}>- Cyclic import check</Text>
             <Text mt={2}>- Mockserver</Text>
-            <Text mt={2}>- Styled theme type</Text>
           </div>
 
           <Button type="button" mt={3} onClick={fetchFacts} width={150} variant="primary" mr={2}>

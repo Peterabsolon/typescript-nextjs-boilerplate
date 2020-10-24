@@ -17,8 +17,6 @@ export const themes: { [key in ThemeKey]: Theme } = {
       primary: '#14b5f5',
       secondary: '#74d3f9',
       text: '#333',
-      focusOutline: 'black',
-      focusOutlineAlt: 'white',
     },
   },
 
@@ -32,10 +30,8 @@ export const themes: { [key in ThemeKey]: Theme } = {
       background: '#1b2735',
       backgroundDark: '#18222f',
       primary: '#74d3f9',
-      secondary: '#fff',
+      secondary: 'hsl(0 0% 95% / 1)',
       text: '#fff',
-      focusOutline: 'black',
-      focusOutlineAlt: 'white',
     },
   },
 }
