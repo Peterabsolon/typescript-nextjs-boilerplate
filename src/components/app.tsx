@@ -10,7 +10,7 @@ import { Link } from '~/components/ui/Link'
 import { useStore } from '~/store'
 import { keys } from '~/utils'
 
-const PAGE_TRANSITION_DURATION = 100
+const PAGE_TRANSITION_DURATION = 80
 const PAGE_PADDING = 16
 const PAGE_MAX_WIDTH = 1366
 const HEADER_HEIGHT = 80
@@ -26,6 +26,7 @@ const GlobalStyles = createGlobalStyle<any>`
   .page-transition-enter {
     opacity: 0;
   }
+  
   .page-transition-enter-active {
     opacity: 1;
     transition: opacity ${PAGE_TRANSITION_DURATION}ms ease-in;
@@ -34,6 +35,7 @@ const GlobalStyles = createGlobalStyle<any>`
   .page-transition-exit {
     opacity: 1;
   }
+  
   .page-transition-exit-active {
     opacity: 0;
     transition: opacity ${PAGE_TRANSITION_DURATION}ms ease-out;

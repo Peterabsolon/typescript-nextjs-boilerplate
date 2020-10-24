@@ -1,7 +1,21 @@
-/// <reference types="jest" />
+import React from 'react'
+import ReactDOM from 'react-dom'
 
-// @ts-ignore
-// eslint-disable-next-line
-// import HomePage from './'
+import { createStore } from '~/store'
 
-it('works', () => expect(1).toBe(1))
+import { HomePage } from './Home.page'
+
+it('renders without crashing', () => {
+  createStore()
+
+  // for now...
+  window.fetch = jest.fn(() =>
+    Promise.resolve({
+      json: jest.fn(() => Promise.resolve([])),
+    } as any)
+  )
+
+  const div = document.createElement('div')
+  ReactDOM.render(<HomePage />, div)
+  ReactDOM.unmountComponentAtNode(div)
+})

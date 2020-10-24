@@ -3,8 +3,6 @@ import defaults from '@rebass/preset'
 
 export type Theme = 'light' | 'dark'
 
-console.log('defaults', defaults)
-
 export const themes: { [key in Theme]: IAnyObject } = {
   // ====================================================
   // Light
@@ -15,7 +13,7 @@ export const themes: { [key in Theme]: IAnyObject } = {
       ...defaults.colors,
       background: 'white',
       backgroundDark: '#eee',
-      primary: 'orange',
+      primary: '#14b5f5',
       text: '#333',
     },
   },

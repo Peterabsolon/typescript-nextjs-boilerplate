@@ -15,8 +15,8 @@ const GET_HEADERS = {
 
 export class HomeStore {
   facts: Fact[] = []
-  factsLoading = false
-  factsLoaded = false
+  factsFetching = false
+  factsFetched = false
 
   themeKey: Theme = 'dark'
 
@@ -29,21 +29,21 @@ export class HomeStore {
   }
 
   @action fetchFacts = async (): Promise<void> => {
-    if (this.factsLoading) {
+    if (this.factsFetching) {
       return
     }
 
-    this.factsLoading = true
+    this.factsFetching = true
 
     try {
       const res = await window.fetch(`${API_URL}/facts/random?amount=3`, GET_HEADERS)
 
       this.facts = await res.json()
-      this.factsLoaded = true
+      this.factsFetched = true
     } catch (error) {
       console.error(error)
     } finally {
-      this.factsLoading = false
+      this.factsFetching = false
     }
   }
 
@@ -52,7 +52,7 @@ export class HomeStore {
   }
 
   @action onPageMount = (): void => {
-    if (!this.factsLoaded) {
+    if (!this.factsFetched) {
       this.fetchFacts()
     }
   }

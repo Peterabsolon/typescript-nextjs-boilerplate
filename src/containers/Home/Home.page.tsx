@@ -2,7 +2,7 @@ import React, { FC, useEffect } from 'react'
 import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 
-import { Button } from '~/components'
+import { Button, Heading, Text } from '~/components'
 import { useStore } from '~/store'
 
 const Fact = styled.div`
@@ -14,14 +14,21 @@ const Fact = styled.div`
 `
 
 export const HomePage: FC = observer(() => {
-  const { facts, fetchFacts, factsLoading, onPageMount } = useStore().HomeStore
+  const { facts, fetchFacts, factsFetching, onPageMount } = useStore().HomeStore
 
   useEffect(onPageMount, [])
 
   return (
     <>
-      <Button type="button" variant="primary" onClick={fetchFacts}>
-        {factsLoading ? 'Loading...' : 'Fetch more'}
+      <div>
+        <Heading color="primary">Todo</Heading>
+        <Text mt={2}>- GraphQL</Text>
+        <Text mt={2}>- Cyclic import check</Text>
+        <Text mt={2}>- Cyclic import check</Text>
+      </div>
+
+      <Button type="button" mt={4} variant="primary" onClick={fetchFacts}>
+        {factsFetching ? 'Loading...' : 'Fetch more'}
       </Button>
 
       {facts.map((fact) => (
