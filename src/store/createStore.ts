@@ -3,10 +3,18 @@ import { createContext, useContext } from 'react'
 
 import { HomeStore } from '~/containers/Home'
 
+import { ApiStore } from './api'
+import { AuthStore } from './auth'
+
 configure({ enforceActions: 'never' })
 
 class AppStore {
-  HomeStore = new HomeStore()
+  api = new ApiStore()
+  auth = new AuthStore()
+
+  pages = {
+    home: new HomeStore()
+  }
 }
 
 let store: AppStore

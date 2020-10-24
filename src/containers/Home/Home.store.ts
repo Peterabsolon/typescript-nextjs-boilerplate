@@ -10,7 +10,7 @@ interface Fact {
 const API_URL = 'https://cat-fact.herokuapp.com'
 const GET_HEADERS = {
   method: 'GET',
-  headers: { 'Content-Type': 'application/json' },
+  headers: { 'Content-Type': 'application/json' }
 }
 
 export class HomeStore {
@@ -36,7 +36,7 @@ export class HomeStore {
     this.factsFetching = true
 
     try {
-      const res = await window.fetch(`${API_URL}/facts/random?amount=3`, GET_HEADERS)
+      const res = await window.fetch(`${API_URL}/facts/random?amount=5`, GET_HEADERS)
       const facts = await res.json()
 
       this.facts = facts
