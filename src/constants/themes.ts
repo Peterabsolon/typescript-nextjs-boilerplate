@@ -3,6 +3,14 @@ import defaults from '@rebass/preset'
 
 export type ThemeKey = 'light' | 'dark'
 
+const FONT_FACE =
+  '-apple-system, BlinkMacSystemFont, segoe ui, Roboto, helvetica neue, Arial, noto sans, sans-serif'
+
+const fonts = {
+  ...defaults.fonts,
+  body: FONT_FACE,
+}
+
 // Theme interface has to be defined in ".d.ts" file in order for styled-components to pick it up
 export const themes: { [key in ThemeKey]: Theme } = {
   // ====================================================
@@ -10,6 +18,7 @@ export const themes: { [key in ThemeKey]: Theme } = {
   // ====================================================
   light: {
     ...defaults,
+    fonts,
     colors: {
       ...defaults.colors,
       background: 'white',
@@ -25,6 +34,7 @@ export const themes: { [key in ThemeKey]: Theme } = {
   // ====================================================
   dark: {
     ...defaults,
+    fonts,
     colors: {
       ...defaults.colors,
       background: '#1b2735',

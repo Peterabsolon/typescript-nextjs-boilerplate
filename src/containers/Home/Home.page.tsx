@@ -2,19 +2,27 @@ import React, { FC, useEffect } from 'react'
 import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 
-import { Box, Button, Flex, Heading, Text } from '~/components'
+import { Box, Button, Flex, Heading, Text, Input } from '~/components'
 import { useStore } from '~/store'
 
 const Fact = styled.div`
   margin-top: 15px;
   width: 400px;
-  border: 1px solid #ccc;
   padding: 4px;
   color: ${(props) => props.theme.colors.text};
 `
 
 export const HomePage: FC = observer(() => {
-  const { facts, fetchFacts, factsFetching, mountPage } = useStore().pages.HomeStore
+  const {
+    city,
+    facts,
+    factsFetching,
+    fetchFacts,
+    fetchWeather,
+    mountPage,
+    setCity,
+    weather,
+  } = useStore().pages.HomeStore
 
   useEffect(mountPage, [])
 
@@ -23,29 +31,20 @@ export const HomePage: FC = observer(() => {
       <Flex>
         <Box>
           <div>
-            <Heading color="primary">Todo</Heading>
-            <Text mt={2}>- Mockserver</Text>
+            <Heading color="primary" mb={2}>
+              Todo
+            </Heading>
+            <Text>- Mockserver</Text>
           </div>
 
           <Button
             type="button"
-            mt={3}
-            onClick={fetchFacts}
-            width={150}
             variant="primary"
-            mr={2}
-            disabled={factsFetching}
-          >
-            {factsFetching ? 'Fetching' : 'Fetch request'}
-          </Button>
-
-          <Button
-            type="button"
-            mt={3}
             onClick={fetchFacts}
-            width={150}
-            variant="secondary"
             disabled={factsFetching}
+            width={150}
+            mt={3}
+            mr={2}
           >
             {factsFetching ? 'Fetching' : 'Fetch request'}
           </Button>
@@ -53,6 +52,20 @@ export const HomePage: FC = observer(() => {
           {facts.map((fact) => (
             <Fact key={fact._id}>{fact.text}</Fact>
           ))}
+        </Box>
+
+        <Box>
+          <Heading color="primary" mb={2}>
+            Weather
+          </Heading>
+
+          <div>
+            City{` `}
+            <Input value={city} onChange={setCity} />
+            <Button onClick={fetchWeather}>Fetch weather</Button>
+          </div>
+
+          <Box mt={3}>{weather?.weather.summary.description}</Box>
         </Box>
       </Flex>
     </>

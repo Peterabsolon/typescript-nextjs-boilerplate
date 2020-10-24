@@ -23,9 +23,10 @@ export const createApi = (
     return mocks
   }
 
+  // prettier-ignore
   return {
     getFacts: (count) => axios.get(`/facts/random?amount=${count}`).then((res) => res.data),
-    getCityWeather: (name) => graphql.request(queries.cityWeatherQuery, name),
+    getCityWeather: (name) => graphql.request(queries.cityWeatherQuery, { name }).then(res => res.getCityByName),
     someMutation: () => graphql.request(mutations.someMutation).then(),
   }
 }

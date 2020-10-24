@@ -22,6 +22,7 @@ export const getCityWeather = (): Promise<CityWeather> =>
     weather: {
       summary: {
         title: 'Na mikinu :D',
+        description: 'Na mikinu zevraj',
       },
     },
   })

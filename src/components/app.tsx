@@ -22,7 +22,7 @@ const GlobalStyles = createGlobalStyle<any>`
   body,
   body * {
     color: ${(props) => props.theme.colors.text};
-    font-family: -apple-system, BlinkMacSystemFont, segoe ui, Roboto, helvetica neue, Arial, noto sans, sans-serif;
+    font-family: ${(props) => props.theme.fonts.body};
   }
 
   .page-transition-enter {
@@ -73,6 +73,10 @@ const PageContent = styled(Content)`
   flex: 1;
 `
 
+const Background = styled.div<{ color: string }>`
+  background: ${(props) => props.color};
+`
+
 export const App: FC<AppProps> = observer(({ Component, pageProps, router }) => {
   const store = useStore()
 
@@ -119,7 +123,7 @@ export const App: FC<AppProps> = observer(({ Component, pageProps, router }) => 
         </HeaderContent>
       </Header>
 
-      <div style={{ background: theme.colors?.background }}>
+      <Background color={theme.colors?.background}>
         {appReady && (
           <PageTransition timeout={PAGE_TRANSITION_DURATION} classNames="page-transition">
             <PageContent key={router.route}>
@@ -127,7 +131,7 @@ export const App: FC<AppProps> = observer(({ Component, pageProps, router }) => 
             </PageContent>
           </PageTransition>
         )}
-      </div>
+      </Background>
     </Wrapper>
   )
 })

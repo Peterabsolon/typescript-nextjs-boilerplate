@@ -15,3 +15,4 @@
 - @testing-library/react
 - ESLint with Airbnb preset
 - Prettier
+- GraphQL codegen (for TS)

@@ -2,7 +2,7 @@ import { makeAutoObservable } from 'mobx'
 import axios, { AxiosInstance } from 'axios'
 import { GraphQLClient } from 'graphql-request'
 
-import { API_URL } from '~/constants'
+import { API_URL, GRAPHQL_URL } from '~/constants'
 
 export class AuthStore {
   // ====================================================
@@ -35,7 +35,7 @@ export class AuthStore {
   }
 
   get graphqlClient(): GraphQLClient {
-    return new GraphQLClient(API_URL, { headers: this.headers })
+    return new GraphQLClient(GRAPHQL_URL, { headers: this.headers })
   }
 
   // ====================================================

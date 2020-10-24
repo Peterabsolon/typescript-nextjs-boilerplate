@@ -1,0 +1,31 @@
+# TODO: This file could be copied from the server repository somehow
+
+enum UserRole {
+  ADMIN
+  USER
+}
+
+type User {
+  id: ID!
+  role: UserRole!
+  firstName: String!
+  lastName: String!
+}
+
+type Query {
+  users: [User!]!
+}
+
+input UserUpdateInput {
+  firstName: String!
+  lastName: String!
+}
+
+type Mutation {
+  userUpdate(input: UserUpdateInput!): User
+}
+
+schema {
+  query: Query
+  mutation: Mutation
+}
