@@ -19,23 +19,20 @@ export class HomeStore {
   // Actions
   // ====================================================
   @action fetchFacts = async (): Promise<void> => {
-    if (this.factsFetching) {
-      return
-    }
-
     this.factsFetching = true
 
     try {
       this.facts = await this.utils.api.getFacts(5)
       this.factsFetched = true
     } catch (error) {
-      console.error(error)
+      this.utils.notification.error(error)
+      this.utils.logger.error(error)
     } finally {
       this.factsFetching = false
     }
   }
 
-  @action onPageMount = (): void => {
+  @action mountPage = (): void => {
     if (!this.factsFetched) {
       this.fetchFacts()
     }

@@ -1,14 +1,14 @@
 import { AxiosInstance } from 'axios'
 import { GraphQLClient } from 'graphql-request'
 
-import * as mocks from './api.mock'
-import { Fact, CityWeather } from './models'
-import * as queries from './queries'
+import * as mocks from './mocks'
+import * as models from './models'
 import * as mutations from './mutations'
+import * as queries from './queries'
 
 export interface IApi {
-  getFacts: (count: number) => Promise<Fact[]>
-  getCityWeather: (name: string) => Promise<CityWeather>
+  getFacts: (count: number) => Promise<models.Fact[]>
+  getCityWeather: (name: string) => Promise<models.CityWeather>
   someMutation: () => Promise<void>
 }
 

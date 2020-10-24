@@ -14,9 +14,9 @@ const Fact = styled.div`
 `
 
 export const HomePage: FC = observer(() => {
-  const { facts, fetchFacts, factsFetching, onPageMount } = useStore().pages.HomeStore
+  const { facts, fetchFacts, factsFetching, mountPage } = useStore().pages.HomeStore
 
-  useEffect(onPageMount, [])
+  useEffect(mountPage, [])
 
   return (
     <>
@@ -24,16 +24,29 @@ export const HomePage: FC = observer(() => {
         <Box>
           <div>
             <Heading color="primary">Todo</Heading>
-            <Text mt={2}>- GraphQL</Text>
-            <Text mt={2}>- Axios</Text>
             <Text mt={2}>- Mockserver</Text>
           </div>
 
-          <Button type="button" mt={3} onClick={fetchFacts} width={150} variant="primary" mr={2}>
+          <Button
+            type="button"
+            mt={3}
+            onClick={fetchFacts}
+            width={150}
+            variant="primary"
+            mr={2}
+            disabled={factsFetching}
+          >
             {factsFetching ? 'Fetching' : 'Fetch request'}
           </Button>
 
-          <Button type="button" mt={3} onClick={fetchFacts} width={150} variant="secondary">
+          <Button
+            type="button"
+            mt={3}
+            onClick={fetchFacts}
+            width={150}
+            variant="secondary"
+            disabled={factsFetching}
+          >
             {factsFetching ? 'Fetching' : 'Fetch request'}
           </Button>
 

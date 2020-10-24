@@ -3,7 +3,7 @@ import defaults from '@rebass/preset'
 
 export type ThemeKey = 'light' | 'dark'
 
-// Theme interface has to be defined in custom.d.ts in order for styled-components to pick it up
+// Theme interface has to be defined in ".d.ts" file in order for styled-components to pick it up
 export const themes: { [key in ThemeKey]: Theme } = {
   // ====================================================
   // Light
