@@ -1,6 +1,6 @@
 /* eslint-disable no-alert */
 
-import { action, makeAutoObservable } from 'mobx'
+import { makeAutoObservable } from 'mobx'
 
 // TODO
 export class NotificationStore {
@@ -8,11 +8,11 @@ export class NotificationStore {
     makeAutoObservable(this)
   }
 
-  @action success = (message: string): void => {
+  success = (message: string): void => {
     alert(`[SUCCESS] ${message}`)
   }
 
-  @action error = (message: string): void => {
+  error = (message: string): void => {
     alert(`[ERROR] ${message}`)
   }
 }

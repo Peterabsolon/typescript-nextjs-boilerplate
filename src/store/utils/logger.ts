@@ -1,6 +1,6 @@
-import { action, makeAutoObservable } from 'mobx'
+import { makeAutoObservable } from 'mobx'
 
-// ...could be anything
+// ...they said I could be anything
 const logger = console
 
 export class LoggerStore {
@@ -8,15 +8,15 @@ export class LoggerStore {
     makeAutoObservable(this)
   }
 
-  @action info = (message: string): void => {
+  info = (message: string): void => {
     logger.log(message)
   }
 
-  @action warning = (message: string): void => {
+  warning = (message: string): void => {
     logger.warn(message)
   }
 
-  @action error = (message: string): void => {
+  error = (message: string): void => {
     logger.error(message)
   }
 }

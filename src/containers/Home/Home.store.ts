@@ -1,4 +1,4 @@
-import { action, makeAutoObservable } from 'mobx'
+import { makeAutoObservable } from 'mobx'
 
 import { Fact } from '~/api/models'
 import { UtilsStore } from '~/store/utils'
@@ -18,7 +18,7 @@ export class HomeStore {
   // ====================================================
   // Actions
   // ====================================================
-  @action fetchFacts = async (): Promise<void> => {
+  fetchFacts = async (): Promise<void> => {
     this.factsFetching = true
 
     try {
@@ -32,7 +32,7 @@ export class HomeStore {
     }
   }
 
-  @action mountPage = (): void => {
+  mountPage = (): void => {
     if (!this.factsFetched) {
       this.fetchFacts()
     }

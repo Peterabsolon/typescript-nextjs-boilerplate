@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC, useEffect } from 'react'
 import { AppProps } from 'next/app'
 import { PageTransition } from 'next-page-transitions'
 import styled, { createGlobalStyle } from 'styled-components'
@@ -74,7 +74,16 @@ const PageContent = styled(Content)`
 `
 
 export const App: FC<AppProps> = observer(({ Component, pageProps, router }) => {
-  const { toggleTheme, theme, key: themeKey } = useStore().utils.theme
+  const store = useStore()
+
+  const { toggleTheme, theme, key: themeKey } = store.utils.theme
+  const { appReady, useMockApi, toggleMockApi } = store.utils
+
+  const windowObj = typeof window === 'undefined' ? undefined : window
+
+  useEffect(() => {
+    store.utils.initApp()
+  }, [windowObj])
 
   return (
     <Wrapper background={theme.colors?.background}>
@@ -98,18 +107,26 @@ export const App: FC<AppProps> = observer(({ Component, pageProps, router }) => 
             })}
           </Flex>
 
-          <Button onClick={toggleTheme} variant="outline">
-            {themeKey === 'light' ? 'Dark' : 'Light'} mode
-          </Button>
+          <Flex>
+            <Button onClick={toggleTheme} variant="outline" mr={2}>
+              {themeKey === 'light' ? 'Dark' : 'Light'} mode
+            </Button>
+
+            <Button onClick={toggleMockApi} variant="outline">
+              {useMockApi ? 'Disable' : 'Enable'} mocked API
+            </Button>
+          </Flex>
         </HeaderContent>
       </Header>
 
       <div style={{ background: theme.colors?.background }}>
-        <PageTransition timeout={PAGE_TRANSITION_DURATION} classNames="page-transition">
-          <PageContent key={router.route}>
-            <Component {...pageProps} />
-          </PageContent>
-        </PageTransition>
+        {appReady && (
+          <PageTransition timeout={PAGE_TRANSITION_DURATION} classNames="page-transition">
+            <PageContent key={router.route}>
+              <Component {...pageProps} />
+            </PageContent>
+          </PageTransition>
+        )}
       </div>
     </Wrapper>
   )

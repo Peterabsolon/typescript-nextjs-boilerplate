@@ -1,4 +1,4 @@
-import { action, makeAutoObservable } from 'mobx'
+import { makeAutoObservable } from 'mobx'
 
 // TODO
 export class RouterStore {
@@ -6,7 +6,7 @@ export class RouterStore {
     makeAutoObservable(this)
   }
 
-  @action redirect = (href: string): void => {
+  redirect = (href: string): void => {
     console.log('nav to href', href)
   }
 }

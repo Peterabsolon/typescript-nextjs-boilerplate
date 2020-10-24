@@ -1,4 +1,4 @@
-import { action, makeAutoObservable } from 'mobx'
+import { makeAutoObservable } from 'mobx'
 
 import { ThemeKey, themes } from '~/constants'
 
@@ -14,7 +14,7 @@ export class ThemeStore {
     return themes[this.key]
   }
 
-  @action toggleTheme = (): void => {
+  toggleTheme = (): void => {
     this.key = this.key === 'light' ? 'dark' : 'light'
   }
 }

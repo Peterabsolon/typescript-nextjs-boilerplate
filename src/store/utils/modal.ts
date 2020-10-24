@@ -1,4 +1,4 @@
-import { action, makeAutoObservable } from 'mobx'
+import { makeAutoObservable } from 'mobx'
 
 // TODO
 export class ModalStore {
@@ -8,11 +8,11 @@ export class ModalStore {
     makeAutoObservable(this)
   }
 
-  @action open = (id: string): void => {
+  open = (id: string): void => {
     console.log('open modal id', id)
   }
 
-  @action close = (): void => {
+  close = (): void => {
     this.openModals = []
   }
 }

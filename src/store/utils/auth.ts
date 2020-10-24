@@ -1,16 +1,22 @@
-import { action, makeAutoObservable } from 'mobx'
+import { makeAutoObservable } from 'mobx'
 import axios, { AxiosInstance } from 'axios'
 import { GraphQLClient } from 'graphql-request'
 
 import { API_URL } from '~/constants'
 
 export class AuthStore {
+  // ====================================================
+  // Model
+  // ====================================================
   token?: string
 
   constructor() {
     makeAutoObservable(this)
   }
 
+  // ====================================================
+  // Views
+  // ====================================================
   get loggedIn(): boolean {
     return Boolean(this.token)
   }
@@ -32,12 +38,15 @@ export class AuthStore {
     return new GraphQLClient(API_URL, { headers: this.headers })
   }
 
-  @action login = (): Promise<void> => {
+  // ====================================================
+  // Actions
+  // ====================================================
+  login = (): Promise<void> => {
     this.token = '123'
     return Promise.resolve()
   }
 
-  @action logout = (): Promise<void> => {
+  logout = (): Promise<void> => {
     this.token = undefined
     return Promise.resolve()
   }
