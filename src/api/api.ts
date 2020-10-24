@@ -24,8 +24,8 @@ export const createApi = (
   }
 
   return {
-    getFacts: (count) => axios.get(`/facts/random?amount=${count}`),
+    getFacts: (count) => axios.get(`/facts/random?amount=${count}`).then((res) => res.data),
     getCityWeather: (name) => graphql.request(queries.cityWeatherQuery, name),
-    someMutation: () => graphql.request(mutations.someMutation),
+    someMutation: () => graphql.request(mutations.someMutation).then(),
   }
 }

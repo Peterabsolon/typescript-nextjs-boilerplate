@@ -1,33 +1,23 @@
 import { action, makeAutoObservable } from 'mobx'
 
-import { ThemeKey, themes } from '~/constants'
-
-interface Fact {
-  _id: string
-  text: string
-}
-
-const API_URL = 'https://cat-fact.herokuapp.com'
-const GET_HEADERS = {
-  method: 'GET',
-  headers: { 'Content-Type': 'application/json' },
-}
+import { Fact } from '~/api/models'
+import { UtilsStore } from '~/store/utils'
 
 export class HomeStore {
+  // ====================================================
+  // Model
+  // ====================================================
   facts: Fact[] = []
   factsFetching = false
   factsFetched = false
 
-  themeKey: ThemeKey = 'dark'
-
-  constructor() {
+  constructor(private utils: UtilsStore) {
     makeAutoObservable(this)
   }
 
-  get theme(): Theme {
-    return themes[this.themeKey]
-  }
-
+  // ====================================================
+  // Actions
+  // ====================================================
   @action fetchFacts = async (): Promise<void> => {
     if (this.factsFetching) {
       return
@@ -36,20 +26,13 @@ export class HomeStore {
     this.factsFetching = true
 
     try {
-      const res = await window.fetch(`${API_URL}/facts/random?amount=5`, GET_HEADERS)
-      const facts = await res.json()
-
-      this.facts = facts
+      this.facts = await this.utils.api.getFacts(5)
       this.factsFetched = true
     } catch (error) {
       console.error(error)
     } finally {
       this.factsFetching = false
     }
-  }
-
-  @action toggleTheme = (): void => {
-    this.themeKey = this.themeKey === 'light' ? 'dark' : 'light'
   }
 
   @action onPageMount = (): void => {

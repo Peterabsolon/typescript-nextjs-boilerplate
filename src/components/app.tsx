@@ -74,7 +74,7 @@ const PageContent = styled(Content)`
 `
 
 export const App: FC<AppProps> = observer(({ Component, pageProps, router }) => {
-  const { toggleTheme, theme, themeKey } = useStore()
+  const { toggleTheme, theme, key: themeKey } = useStore().utils.theme
 
   return (
     <Wrapper background={theme.colors?.background}>

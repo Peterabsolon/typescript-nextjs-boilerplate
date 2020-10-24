@@ -1,14 +1,18 @@
+import { action, makeAutoObservable } from 'mobx'
 import axios, { AxiosInstance } from 'axios'
 import { GraphQLClient } from 'graphql-request'
-import { action, makeAutoObservable } from 'mobx'
-import { createApi, IApi } from '~/api'
+
 import { API_URL } from '~/constants'
 
-export class ApiStore {
-  useMocks = false
+export class AuthStore {
+  token?: string
 
-  constructor(readonly token?: string) {
+  constructor() {
     makeAutoObservable(this)
+  }
+
+  get loggedIn(): boolean {
+    return Boolean(this.token)
   }
 
   get headers(): IAnyObject {
@@ -17,7 +21,7 @@ export class ApiStore {
     }
   }
 
-  get apiClient(): AxiosInstance {
+  get restClient(): AxiosInstance {
     return axios.create({
       baseURL: API_URL,
       headers: this.headers,
@@ -28,11 +32,13 @@ export class ApiStore {
     return new GraphQLClient(API_URL, { headers: this.headers })
   }
 
-  get api(): IApi {
-    return createApi(this.useMocks, this.apiClient, this.graphqlClient)
+  @action login = (): Promise<void> => {
+    this.token = '123'
+    return Promise.resolve()
   }
 
-  @action toggleMockApi = (): void => {
-    this.useMocks = !this.useMocks
+  @action logout = (): Promise<void> => {
+    this.token = undefined
+    return Promise.resolve()
   }
 }
