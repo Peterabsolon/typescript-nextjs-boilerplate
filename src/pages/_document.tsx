@@ -8,7 +8,7 @@ import Document, {
   DocumentContext,
 } from 'next/document'
 
-import { APP_DESCRIPTION, APP_NAME } from '../constants/app'
+import { APP_DESCRIPTION, APP_NAME } from '~/constants/app'
 
 export default class MyDocument extends Document {
   static async getInitialProps(ctx: DocumentContext): Promise<DocumentInitialProps> {

@@ -2,7 +2,7 @@ import { ReactElement } from 'react'
 import Head from 'next/head'
 import { observer } from 'mobx-react-lite'
 
-import { Box, Text } from '../../components'
+import { Box, Text } from '~/components'
 
 function OtherPage(): ReactElement {
   return (

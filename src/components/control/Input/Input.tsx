@@ -1,10 +1,10 @@
 import { FC } from 'react'
 
-interface Input {
+export interface InputProps {
   value: string
   label: string
 }
 
-export const Input: FC<Input> = () => {
-  return <div>Input</div>
+export const Input: FC<InputProps> = () => {
+  return <input type="text" />
 }

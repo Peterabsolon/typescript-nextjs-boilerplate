@@ -2,8 +2,8 @@ import React, { FC, useEffect } from 'react'
 import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 
-import { Button } from '../../components'
-import { useStore } from '../../store'
+import { Button } from '~/components'
+import { useStore } from '~/store'
 
 const Fact = styled.div`
   margin-top: 15px;

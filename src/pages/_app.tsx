@@ -8,8 +8,8 @@ import { ThemeProvider } from 'emotion-theming'
 import { ThemeProvider as StyledThemeProvider } from 'styled-components'
 import { Reset as StyledReset } from 'styled-reset'
 
-import { createStore, useStore } from '../store'
-import { App as AppComponent } from '../components/app'
+import { createStore, useStore } from '~/store'
+import { App as AppComponent } from '~/components/app'
 
 // Perf debug
 export function reportWebVitals(metric: unknown): void {

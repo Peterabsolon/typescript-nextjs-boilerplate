@@ -1,21 +1,21 @@
 import { FC } from 'react'
-import Link from 'next/link'
 import { AppProps } from 'next/app'
 import { PageTransition } from 'next-page-transitions'
 import styled, { createGlobalStyle } from 'styled-components'
 import { Button, Heading, Flex } from 'rebass'
 import { observer } from 'mobx-react-lite'
 
-import { APP_NAME, RouteEnum, RouteLabels } from '../constants'
-import { useStore } from '../store'
-import { keys } from '../utils'
+import { APP_NAME, RouteEnum, RouteLabels } from '~/constants'
+import { Link } from '~/components/ui/Link'
+import { useStore } from '~/store'
+import { keys } from '~/utils'
 
 const PAGE_TRANSITION_DURATION = 100
 const PAGE_PADDING = 16
 const PAGE_MAX_WIDTH = 1366
-
 const HEADER_HEIGHT = 80
 
+// TODO: theme types
 const GlobalStyles = createGlobalStyle<any>`
   html,
   body {
@@ -60,17 +60,19 @@ const Header = styled.div`
   align-items: center;
   padding: 0 ${PAGE_PADDING}px;
   height: ${HEADER_HEIGHT}px;
+  background: ${(props) => props.theme.colors?.backgroundDark};
+  margin-bottom: 24px;
 `
 
 export const App: FC<AppProps> = observer(({ Component, pageProps, router }) => {
-  const { switchTheme, theme } = useStore().HomeStore
+  const { switchTheme, theme, themeKey } = useStore().HomeStore
 
   return (
     <Wrapper background={theme.colors?.background}>
       <GlobalStyles />
 
       <Header>
-        <Heading fontSize={16} mb={24} color="primary">
+        <Heading fontSize={16} color="primary">
           {APP_NAME}
         </Heading>
 
@@ -79,16 +81,16 @@ export const App: FC<AppProps> = observer(({ Component, pageProps, router }) => 
             const href = RouteEnum[key]
 
             return (
-              <Link href={href}>
-                <Heading fontSize={14} variant="secondary" mr={2}>
-                  {RouteLabels[href]}
-                </Heading>
-              </Link>
+              <Heading key={href} fontSize={14} color="secondary" mr={2}>
+                <Link to={href}>{RouteLabels[href]}</Link>
+              </Heading>
             )
           })}
         </Flex>
 
-        <Button onClick={switchTheme}>Dark mode</Button>
+        <Button onClick={switchTheme} variant="outline">
+          {themeKey === 'light' ? 'Dark' : 'Light'} mode
+        </Button>
       </Header>
 
       <div style={{ background: theme.colors?.background }}>

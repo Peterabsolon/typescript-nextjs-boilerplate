@@ -1,7 +1,7 @@
 import { configure } from 'mobx'
 import { createContext, useContext } from 'react'
 
-import { HomeStore } from '../containers/Home'
+import { HomeStore } from '~/containers/Home'
 
 configure({ enforceActions: 'never' })
 

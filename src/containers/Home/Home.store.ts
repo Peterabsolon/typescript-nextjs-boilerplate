@@ -1,6 +1,6 @@
 import { action, makeAutoObservable } from 'mobx'
 
-import { Theme, themes } from '../../constants'
+import { Theme, themes } from '~/constants'
 
 interface Fact {
   _id: string
@@ -18,7 +18,7 @@ export class HomeStore {
   factsLoading = false
   factsLoaded = false
 
-  themeKey: Theme = 'light'
+  themeKey: Theme = 'dark'
 
   constructor() {
     makeAutoObservable(this)
