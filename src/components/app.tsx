@@ -74,7 +74,7 @@ const PageContent = styled(Content)`
 `
 
 export const App: FC<AppProps> = observer(({ Component, pageProps, router }) => {
-  const { switchTheme, theme, themeKey } = useStore().HomeStore
+  const { toggleTheme, theme, themeKey } = useStore()
 
   return (
     <Wrapper background={theme.colors?.background}>
@@ -98,7 +98,7 @@ export const App: FC<AppProps> = observer(({ Component, pageProps, router }) => 
             })}
           </Flex>
 
-          <Button onClick={switchTheme} variant="outline">
+          <Button onClick={toggleTheme} variant="outline">
             {themeKey === 'light' ? 'Dark' : 'Light'} mode
           </Button>
         </HeaderContent>

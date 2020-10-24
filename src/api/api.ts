@@ -1,27 +1,31 @@
-import axios from 'axios'
-import { gql, GraphQLClient } from 'graphql-request'
+import { AxiosInstance } from 'axios'
+import { GraphQLClient } from 'graphql-request'
 
-import { API_URL, GRAPHQL_URL } from '~/constants'
-
+import * as mocks from './api.mock'
 import { Fact, CityWeather } from './models'
+import * as queries from './queries'
+import * as mutations from './mutations'
 
-const getCityWeatherQuery = gql`
-  {
-    getCityByName(name: "Bratislava") {
-      id
-      weather {
-        summary {
-          title
-        }
-      }
-    }
+export interface IApi {
+  getFacts: (count: number) => Promise<Fact[]>
+  getCityWeather: (name: string) => Promise<CityWeather>
+  someMutation: () => Promise<void>
+}
+
+// Passed in are client instances with Authorization header configured from the store
+export const createApi = (
+  useMocks: boolean,
+  axios: AxiosInstance,
+  graphql: GraphQLClient
+): IApi => {
+  if (useMocks) {
+    // Typecheck all requests have mock version
+    return mocks
   }
-`
 
-const api = axios.create({ baseURL: API_URL })
-
-const graphql = new GraphQLClient(GRAPHQL_URL)
-
-export const getFacts = (count: number): Promise<Fact[]> => api.get(`/facts/random?amount=${count}`)
-
-export const getCityWeather = (): Promise<CityWeather> => graphql.request(getCityWeatherQuery)
+  return {
+    getFacts: (count) => axios.get(`/facts/random?amount=${count}`),
+    getCityWeather: (name) => graphql.request(queries.cityWeatherQuery, name),
+    someMutation: () => graphql.request(mutations.someMutation),
+  }
+}

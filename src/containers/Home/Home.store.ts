@@ -10,7 +10,7 @@ interface Fact {
 const API_URL = 'https://cat-fact.herokuapp.com'
 const GET_HEADERS = {
   method: 'GET',
-  headers: { 'Content-Type': 'application/json' }
+  headers: { 'Content-Type': 'application/json' },
 }
 
 export class HomeStore {
@@ -48,7 +48,7 @@ export class HomeStore {
     }
   }
 
-  @action switchTheme = (): void => {
+  @action toggleTheme = (): void => {
     this.themeKey = this.themeKey === 'light' ? 'dark' : 'light'
   }
 

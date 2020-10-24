@@ -14,7 +14,7 @@ const Fact = styled.div`
 `
 
 export const HomePage: FC = observer(() => {
-  const { facts, fetchFacts, factsFetching, onPageMount } = useStore().HomeStore
+  const { facts, fetchFacts, factsFetching, onPageMount } = useStore().pages.HomeStore
 
   useEffect(onPageMount, [])
 
@@ -26,7 +26,6 @@ export const HomePage: FC = observer(() => {
             <Heading color="primary">Todo</Heading>
             <Text mt={2}>- GraphQL</Text>
             <Text mt={2}>- Axios</Text>
-            <Text mt={2}>- Cyclic import check</Text>
             <Text mt={2}>- Mockserver</Text>
           </div>
 

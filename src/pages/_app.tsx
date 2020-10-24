@@ -21,7 +21,9 @@ export function reportWebVitals(metric: unknown): void {
 createStore()
 
 function MyApp(appProps: AppProps): JSX.Element {
-  const { theme } = useStore().HomeStore
+  const { theme, themeKey } = useStore()
+
+  console.log('themeKey', themeKey)
 
   return (
     <>

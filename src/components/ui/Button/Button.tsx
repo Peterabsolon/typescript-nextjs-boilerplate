@@ -12,17 +12,20 @@ const StyledRebassButton = styled(RebassButton)`
 
   // override specifity
   && {
-    ${(props) => {
-      switch (props.variant) {
-        case 'outline':
-          return css`
-            // use solid border instead of shadow
-            box-shadow: inset 0 0 0 2px;
-          `
-        default:
-          return ''
-      }
-    }}
+    ${(props) => css`
+      ${props.onClick &&
+      css`
+        &:hover {
+          cursor: pointer;
+        }
+      `}
+
+      ${props.variant === 'outline' &&
+      css`
+        // use solid border instead of shadow
+        box-shadow: inset 0 0 0 2px;
+      `}
+    `}
   }
 ` as typeof RebassButton
 

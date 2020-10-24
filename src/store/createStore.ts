@@ -1,19 +1,45 @@
-import { configure } from 'mobx'
+import { action, configure, makeAutoObservable } from 'mobx'
 import { createContext, useContext } from 'react'
 
+import { ThemeKey, themes } from '~/constants'
 import { HomeStore } from '~/containers/Home'
 
 import { ApiStore } from './api'
-import { AuthStore } from './auth'
 
 configure({ enforceActions: 'never' })
 
 class AppStore {
-  api = new ApiStore()
-  auth = new AuthStore()
+  themeKey: ThemeKey = 'dark'
+  authToken?: string = undefined
+
+  api = new ApiStore(this.authToken)
 
   pages = {
-    home: new HomeStore()
+    HomeStore: new HomeStore(),
+  }
+
+  constructor() {
+    makeAutoObservable(this)
+  }
+
+  get theme(): Theme {
+    return themes[this.themeKey]
+  }
+
+  get loggedIn(): boolean {
+    return Boolean(this.authToken)
+  }
+
+  @action toggleTheme = (): void => {
+    this.themeKey = this.themeKey === 'light' ? 'dark' : 'light'
+  }
+
+  @action login = () => {
+    this.authToken = '123'
+  }
+
+  @action logout = () => {
+    this.authToken = undefined
   }
 }
 
