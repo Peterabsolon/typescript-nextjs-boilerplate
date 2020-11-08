@@ -1,6 +1,6 @@
 import { OrderItem, PalletType } from '~/api/data'
 
-import { ScannedPaletteModel } from './ScannedPalette.model'
+import { ScannedPaletteModel } from './models'
 
 export const validatePalleteNoStep = (
   inputValue: string,
@@ -42,3 +42,6 @@ export const validatePalleteTypeStep = (inputValue: string): string => {
 
   return ''
 }
+
+export const isKitNo = (num: string | number, kitNumbers: string[]): boolean =>
+  kitNumbers.includes(String(num).toUpperCase())

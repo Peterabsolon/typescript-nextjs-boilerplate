@@ -13,12 +13,12 @@ export const createApi = (useMocks: boolean, axios: AxiosInstance): IApi => {
   // prettier-ignore
   return {
     // Auth
-    loginAdmin: (username, password) => axios.post('/authorization/token', { username, password }).then(r => r.data),
+    loginAdmin: (username, password) => axios.post('/api/authorization/token', { username, password }).then(r => r.data),
 
     // Common
-    getPalletTypes: () => axios.get('/common/pallettypes').then(r => r.data),
+    getPalletTypes: () => axios.get('/api/common/pallettypes').then(r => r.data),
 
     // Packing
-    getOrder: (num) => axios.get(`/packing/${num}`).then(r => r.data),
+    getOrder: (num) => axios.get(`/api/packing/${num}`).then(r => r.data),
   }
 }

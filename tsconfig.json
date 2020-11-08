@@ -72,5 +72,6 @@
     /* Misc */
     "resolveJsonModule": true                 /* Required by Next.js */
   },
+  "exclude": ["node_modules"],
   "include": ["next-env.d.ts", "src/**/*.ts", "src/**/*.tsx"]
 }

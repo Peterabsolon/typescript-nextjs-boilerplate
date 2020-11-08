@@ -10,6 +10,7 @@ const StyledTable = styled.table`
   background: #fff;
   text-align: left;
   margin-bottom: 13px;
+  width: 100%;
 `
 
 interface TableProps<Row> {

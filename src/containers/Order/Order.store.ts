@@ -1,31 +1,37 @@
 import { makeAutoObservable, observable } from 'mobx'
 
-import { Kit, OrderItem, PalletType } from '~/api/data'
+import { Kit, Order, OrderItem, PalletType } from '~/api/data'
 import { UtilsStore } from '~/store/utils'
 import { InputModel } from '~/components'
 
 import { Step, StepHint } from './constants'
 
-import { OrderModel } from './Order.model'
-import { ScannedPaletteModel } from './ScannedPalette.model'
-import { ScannedItemModel } from './ScannedItem.model'
+import { ScannedPaletteModel, ScannedItemModel, ScannedKitModel } from './models'
 import { validatePalleteNoStep } from './utils'
 
 export class OrderStore {
   // ====================================================
   // Model
   // ====================================================
-  step = Step.PALETT_NO
-  input = new InputModel()
-
-  order?: OrderModel
+  // The order that's being processed
+  orderNoInput = new InputModel()
+  order?: Order
   orderLoading = false
   orderLoaded = false
 
-  palleteTypes: PalletType[]
+  // Static data from the server
+  palleteTypes: PalletType[] = []
 
+  // Wizard controls
+  step = Step.PALETT_NO
+  input = new InputModel()
+  scanning = false
+  correction = false
+
+  // Wizard progress
   scannedPalettes = observable<ScannedPaletteModel>([])
   scannedItems = observable<ScannedItemModel>([])
+  scannedKit: ScannedKitModel
 
   constructor(private utils: UtilsStore) {
     makeAutoObservable(this)
@@ -34,6 +40,14 @@ export class OrderStore {
   // ====================================================
   // Memoized views
   // ====================================================
+  get isPlantronics(): boolean {
+    return Boolean(this.order?.client === 'Plantronics')
+  }
+
+  get barCodes(): string[] {
+    return this.orderItems.map((item) => item.barcode)
+  }
+
   get orderItems(): OrderItem[] {
     return this.order?.orderItems ?? []
   }
@@ -42,19 +56,23 @@ export class OrderStore {
     return this.order?.kits ?? []
   }
 
-  get scannedPallete(): ScannedPaletteModel | null {
-    if (!this.scannedPalettes.length) return null
-    return this.scannedPalettes[this.scannedPalettes.length - 1]
-  }
-
-  get barCodes(): string[] {
-    return this.orderItems.map((item) => item.barcode)
-  }
-
   get kitNumbers(): string[] {
     return this.kits.map((kit) => kit.kitNumber)
   }
 
+  get matchingKit(): Kit | undefined {
+    return this.kits.find((kit) => kit.kitNumber === this.input.value)
+  }
+
+  get scannedPallete(): ScannedPaletteModel | null {
+    if (!this.scannedPalettes.length) return null
+
+    return this.scannedPalettes[this.scannedPalettes.length - 1]
+  }
+
+  // -----------------------------------
+  // Wizard
+  // -----------------------------------
   get stepHint(): string {
     return StepHint[this.step]
   }
@@ -95,6 +113,28 @@ export class OrderStore {
   }
 
   // ====================================================
+  // Setters
+  // ====================================================
+  setStep = (step: Step): void => {
+    this.step = step
+  }
+
+  setPalleteNo = (paletteNo: string): void => {
+    this.scannedPalettes.push(new ScannedPaletteModel({ paletteNo }))
+  }
+
+  setPalleteType = (type: string): void => {
+    if (!this.scannedPallete) return
+    this.scannedPallete.setType(type)
+  }
+
+  setKit = (kit: Kit): void => {
+    console.log('set kit', kit)
+    // const orderItems = kit.items.map((item) => this.o)
+    // this.scannedKit = new ScannedKitModel(kit)
+  }
+
+  // ====================================================
   // API
   // ====================================================
   private getCommonData = async (): Promise<void> => {
@@ -105,12 +145,11 @@ export class OrderStore {
     }
   }
 
-  private getOrder = async (num: number): Promise<void> => {
+  private getOrder = async (num: string): Promise<void> => {
     this.orderLoading = true
 
     try {
-      const order = await this.utils.api.getOrder(num)
-      this.order = new OrderModel(order)
+      this.order = await this.utils.api.getOrder(num)
       this.orderLoaded = true
     } catch (e) {
       this.utils.notification.error(e)
@@ -124,8 +163,14 @@ export class OrderStore {
   // ====================================================
   submit = (): void => {
     switch (this.step) {
+      case 'ORDER_NO': {
+        this.getOrder(this.input.pop())
+        this.setStep(Step.PALETT_NO)
+        break
+      }
+
       case 'PALETT_NO': {
-        this.createPallete(this.input.pop())
+        this.setPalleteNo(this.input.pop())
         this.setStep(Step.PALETT_TYPE)
         break
       }
@@ -137,6 +182,14 @@ export class OrderStore {
       }
 
       case 'ITEM_OR_KIT_NO': {
+        const num = this.input.pop()
+
+        if (this.matchingKit) {
+          this.setKit(this.matchingKit)
+        } else {
+          console.log('do something with item no', num)
+        }
+
         this.setPalleteType(this.input.pop())
         this.setStep(Step.ITEM_OR_KIT_NO)
         break
@@ -147,21 +200,7 @@ export class OrderStore {
     }
   }
 
-  setStep = (step: Step): void => {
-    this.step = step
-  }
-
-  setPalleteType = (type: string): void => {
-    if (!this.scannedPallete) return
-    this.scannedPallete.setType(type)
-  }
-
-  createPallete = (paletteNo: string): void => {
-    this.scannedPalettes.push(new ScannedPaletteModel({ paletteNo }))
-  }
-
   mountPage = (): void => {
     this.getCommonData()
-    this.getOrder(123)
   }
 }

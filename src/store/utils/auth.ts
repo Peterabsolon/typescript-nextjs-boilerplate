@@ -1,7 +1,4 @@
 import { makeAutoObservable } from 'mobx'
-import axios, { AxiosInstance } from 'axios'
-
-import { API_URL } from '~/constants'
 
 export class AuthStore {
   // ====================================================
@@ -18,19 +15,6 @@ export class AuthStore {
   // ====================================================
   get loggedIn(): boolean {
     return Boolean(this.token)
-  }
-
-  get headers(): IAnyObject {
-    return {
-      Authorization: this.token ? `Bearer ${this.token}` : undefined,
-    }
-  }
-
-  get apiClient(): AxiosInstance {
-    return axios.create({
-      baseURL: API_URL,
-      headers: this.headers,
-    })
   }
 
   // ====================================================

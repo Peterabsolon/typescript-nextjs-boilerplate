@@ -2,10 +2,8 @@ import styled from 'styled-components'
 import { Heading, Flex } from 'rebass'
 import { observer } from 'mobx-react-lite'
 
-import { APP_NAME, RouteEnum, RouteLabels } from '~/constants'
+import { APP_NAME } from '~/constants'
 import { Button } from '~/components/ui/Button'
-import { Link } from '~/components/ui/Link'
-import { keys } from '~/utils'
 import { useStore } from '~/store'
 
 const PAGE_PADDING = 16
@@ -39,7 +37,7 @@ export const Header = observer(() => {
           {APP_NAME}
         </Heading>
 
-        <Flex justifyContent="center">
+        {/* <Flex justifyContent="center">
           {keys(RouteEnum).map((key) => {
             const href = RouteEnum[key]
 
@@ -49,15 +47,17 @@ export const Header = observer(() => {
               </Heading>
             )
           })}
-        </Flex>
+        </Flex> */}
 
         <Flex justifyContent="flex-end">
-          <Button onClick={utils.theme.toggle} variant="outline" mr={2}>
-            {utils.theme.key === 'light' ? 'Dark' : 'Light'} mode
-          </Button>
-
-          <Button onClick={utils.toggleMocks} variant="outline">
+          {/* <Button onClick={utils.toggleMocks} variant="primary" mr={3}>
             {utils.useMocks ? 'Disable' : 'Enable'} mocks
+          </Button> */}
+
+          <Button onClick={utils.auth.login} variant="primary">
+            {utils.auth.loggedIn
+              ? 'Ukončit režim administrátora'
+              : 'Přihlásit se jako administátor'}
           </Button>
         </Flex>
       </HeaderContent>

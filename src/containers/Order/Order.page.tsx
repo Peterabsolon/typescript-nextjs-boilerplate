@@ -1,18 +1,23 @@
 import React, { FC, useEffect } from 'react'
 import { observer } from 'mobx-react-lite'
+import styled from 'styled-components'
 
+import { Kit, OrderItem, PalletType } from '~/api/data'
 import { Button, Heading, Table, Input, Text } from '~/components'
 import { useStore } from '~/store'
 
-import { OrderItemModel } from './OrderItem.model'
-import { ScannedPaletteModel } from './ScannedPalette.model'
-import { Kit, PalletType } from '~/api/data'
+import { ScannedPaletteModel } from './models'
+
+const Controls = styled.div``
+
+const ScanningForm = styled.div``
 
 export const OrderPage: FC = observer(() => {
   const {
     input,
+    kits,
     mountPage,
-    order,
+    orderItems,
     palleteTypes,
     scannedPalettes,
     stepError,
@@ -23,15 +28,11 @@ export const OrderPage: FC = observer(() => {
 
   useEffect(mountPage, [])
 
-  if (!order) {
-    return null
-  }
-
   return (
     <>
       <Heading>Položky objednávky</Heading>
-      <Table<OrderItemModel>
-        rows={order.orderItems}
+      <Table<OrderItem>
+        rows={orderItems}
         cols={[
           { key: 'itemNumber', label: 'Item No' },
           { key: 'name2', label: 'Name' },
@@ -43,7 +44,7 @@ export const OrderPage: FC = observer(() => {
 
       <Heading>Kity objednávky</Heading>
       <Table<Kit>
-        rows={order.kits.map((kit) => ({ ...kit, id: kit.kitNumber }))}
+        rows={kits.map((kit) => ({ ...kit, id: kit.kitNumber }))}
         cols={[
           { key: 'kitNumber', label: 'Kit No' },
           { key: 'kitQuantity', label: 'Qty' },
@@ -59,17 +60,25 @@ export const OrderPage: FC = observer(() => {
         cols={[{ key: 'paletteNo', label: 'Pallet No' }]}
       />
 
-      <Text mt={3}>{stepHint}</Text>
+      <Controls>
+        <Button variant="primary" disabled={!stepValid || !input.value} onClick={submit} mt={1}>
+          Start
+        </Button>
 
-      <Button variant="primary" disabled={!stepValid || !input.value} onClick={submit} mt={1}>
-        Submit
-      </Button>
+        <Button variant="primary" disabled={!stepValid || !input.value} onClick={submit} mt={1}>
+          Submit
+        </Button>
+      </Controls>
 
-      <div>
-        <Input model={input} />
-      </div>
+      <ScanningForm>
+        <Text mt={3}>{stepHint}</Text>
 
-      <Text>{stepError}</Text>
+        <div>
+          <Input model={input} />
+        </div>
+
+        <Text>{stepError}</Text>
+      </ScanningForm>
     </>
   )
 })
