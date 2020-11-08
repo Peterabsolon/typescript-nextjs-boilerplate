@@ -1,5 +1,6 @@
-// @ts-ignore
 import defaults from '@rebass/preset'
+
+console.log('defaults', defaults)
 
 export type ThemeKey = 'light' | 'dark'
 
@@ -11,6 +12,14 @@ const fonts = {
   body: FONT_FACE,
 }
 
+const shared = {
+  ...defaults,
+  fonts,
+}
+
+const primary = '#182a61'
+const border = '#eef1fb'
+
 // Theme interface defined in ~/@types/theme.d.ts
 // styled-components picks it up from there to provide typings for props.theme
 export const themes: { [key in ThemeKey]: Theme } = {
@@ -18,13 +27,13 @@ export const themes: { [key in ThemeKey]: Theme } = {
   // Light
   // ====================================================
   light: {
-    ...defaults,
-    fonts,
+    ...shared,
     colors: {
       ...defaults.colors,
       background: 'whitesmoke',
-      backgroundDark: '#efefef',
-      primary: '#14b5f5',
+      backgroundLight: '#eef1fb',
+      primary,
+      border,
       secondary: '#74d3f9',
       text: '#333',
     },
@@ -34,13 +43,13 @@ export const themes: { [key in ThemeKey]: Theme } = {
   // Dark
   // ====================================================
   dark: {
-    ...defaults,
-    fonts,
+    ...shared,
     colors: {
       ...defaults.colors,
-      background: '#1b2735',
-      backgroundDark: '#18222f',
-      primary: '#74d3f9',
+      background: '#18222f',
+      backgroundLight: '#1b2735',
+      primary,
+      border,
       secondary: 'hsl(0 0% 95% / 1)',
       text: '#fff',
     },

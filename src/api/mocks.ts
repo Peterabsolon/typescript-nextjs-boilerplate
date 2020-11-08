@@ -3,7 +3,10 @@
 import { IApi } from './api.interface'
 import { Kit, Order, OrderItem, PalletType } from './data'
 
-const ORDER_ITEM_1_ID = 'ORDER_ITEM_1_ID'
+const ORDER_ITEM_1_ID = '10000-01'
+const ORDER_ITEM_2_ID = '10000-02'
+
+const KIT_1_ID = '20000-01'
 
 export const orderItems: OrderItem[] = [
   {
@@ -13,14 +16,39 @@ export const orderItems: OrderItem[] = [
     buentId: 50,
     client: 'Plantronics',
     customs: null,
-    description: 'Cool new Samsung TV',
+    description: 'OLED Samsung TV',
     expiryDate: '',
-    isKit: false,
+    isKit: true,
     itemNumber: ORDER_ITEM_1_ID,
-    kitNumber: '',
-    kitQuantity: '',
+    kitNumber: KIT_1_ID,
+    kitQuantity: '1',
     lineNumberReference: '1',
     name2: 'Samsung TV',
+    netWeight: 2.187,
+    orderLineText3: '',
+    productionDate: null,
+    quantity: 1,
+    scanSerialNumbers: true,
+    serialNumbersMaxLength: null,
+    serialNumbersPattern: null,
+    totalWeight: 2.187,
+    unit: 'KS',
+  },
+  {
+    barcode: '2-barcode',
+    batchNo: '',
+    batchNo2: '',
+    buentId: 51,
+    client: 'Plantronics',
+    customs: null,
+    description: 'HTML cable',
+    expiryDate: '',
+    isKit: true,
+    itemNumber: ORDER_ITEM_2_ID,
+    kitNumber: KIT_1_ID,
+    kitQuantity: '1',
+    lineNumberReference: '1',
+    name2: 'HTML 2.0 Cable',
     netWeight: 2.187,
     orderLineText3: '',
     productionDate: null,
@@ -35,7 +63,7 @@ export const orderItems: OrderItem[] = [
 
 export const kits: Kit[] = [
   {
-    kitNumber: 'Kit-123',
+    kitNumber: KIT_1_ID,
     kitQuantity: 2,
     items: [{ itemNumber: ORDER_ITEM_1_ID, quantity: 1 }],
   },

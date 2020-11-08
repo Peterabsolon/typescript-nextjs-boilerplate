@@ -10,7 +10,6 @@ import { Header } from './header'
 import { GlobalStyles, PAGE_TRANSITION_DURATION } from './globalStyles'
 
 const PAGE_PADDING = 16
-const PAGE_MAX_WIDTH = 1366
 
 const Wrapper = styled.div<{ background: string }>`
   background: ${(props) => props.background};
@@ -20,8 +19,6 @@ const Wrapper = styled.div<{ background: string }>`
 `
 
 const Content = styled.div`
-  margin: 0 auto;
-  max-width: ${PAGE_MAX_WIDTH}px;
   padding: 0 ${PAGE_PADDING}px;
 `
 

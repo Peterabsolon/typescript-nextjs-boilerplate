@@ -34,8 +34,10 @@ export const OrderPage: FC = observer(() => {
         rows={order.orderItems}
         cols={[
           { key: 'itemNumber', label: 'Item No' },
+          { key: 'name2', label: 'Name' },
+          { key: 'description', label: 'Description' },
           { key: 'buentId', label: 'Buent ID' },
-          { key: 'barcode', label: 'Barcode', unit: 'ks' },
+          { key: 'barcode', label: 'Barcode', badge: 'ks' },
         ]}
       />
 

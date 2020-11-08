@@ -9,17 +9,13 @@ import { keys } from '~/utils'
 import { useStore } from '~/store'
 
 const PAGE_PADDING = 16
-const PAGE_MAX_WIDTH = 1366
 const HEADER_HEIGHT = 80
 
 const Wrapper = styled.div`
-  background: ${(props) => props.theme.colors?.backgroundDark};
   margin-bottom: 24px;
 `
 
 const Content = styled.div`
-  margin: 0 auto;
-  max-width: ${PAGE_MAX_WIDTH}px;
   padding: 0 ${PAGE_PADDING}px;
 `
 
