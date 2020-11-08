@@ -1,22 +1,24 @@
 import { AxiosInstance } from 'axios'
-import { GraphQLClient } from 'graphql-request'
 
 import { IApi } from './api.interface'
-import { mocks } from './mocks'
-import { someMutation } from './mutations'
-import { cityWeatherQuery } from './queries'
+import { mockApi } from './mocks'
 
 // Passed in are client instances with Authorization header configured from the store
-export const createApi = (useMocks: boolean, axios: AxiosInstance, gql: GraphQLClient): IApi => {
+export const createApi = (useMocks: boolean, axios: AxiosInstance): IApi => {
   if (useMocks) {
-    // Typecheck all requests have mock version
-    return mocks
+    // Typecheck all requests have mocks
+    return mockApi
   }
 
   // prettier-ignore
   return {
-    getFacts: (count) => axios.get(`/facts/random?amount=${count}`).then((res) => res.data),
-    getCityWeather: (name) => gql.request(cityWeatherQuery, { name }).then(res => res.getCityByName),
-    someMutation: () => gql.request(someMutation).then(),
+    // Auth
+    loginAdmin: (username, password) => axios.post('/authorization/token', { username, password }).then(r => r.data),
+
+    // Common
+    getPalletTypes: () => axios.get('/common/pallettypes').then(r => r.data),
+
+    // Packing
+    getOrder: (num) => axios.get(`/packing/${num}`).then(r => r.data),
   }
 }

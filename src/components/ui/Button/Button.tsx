@@ -34,4 +34,6 @@ const StyledRebassButton = styled(RebassButton)`
   }
 ` as typeof RebassButton
 
-export const Button: FC<ButtonProps> = observer((props) => <StyledRebassButton {...props} />)
+export const Button: FC<ButtonProps> = observer(({ type = 'button', ...props }) => (
+  <StyledRebassButton type={type} {...props} />
+))

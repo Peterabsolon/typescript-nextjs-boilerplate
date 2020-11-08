@@ -10,7 +10,7 @@ import { ThemeStore } from './theme'
 const USE_MOCK_API = 'USE_MOCK_API'
 
 export class UtilsStore {
-  useMockApi = false
+  useMocks = false
   appReady = false
 
   auth = new AuthStore()
@@ -25,23 +25,23 @@ export class UtilsStore {
   }
 
   get api(): IApi {
-    return createApi(this.useMockApi, this.auth.restClient, this.auth.graphqlClient)
+    return createApi(this.useMocks, this.auth.apiClient)
   }
 
   initApp = (): void => {
     if (window) {
       const item = window.localStorage.getItem(USE_MOCK_API)
 
-      this.useMockApi = item && JSON.parse(item)
+      this.useMocks = item && JSON.parse(item)
       this.appReady = true
     }
   }
 
-  toggleMockApi = (): void => {
-    this.useMockApi = !this.useMockApi
+  toggleMocks = (): void => {
+    this.useMocks = !this.useMocks
 
     if (window) {
-      window.localStorage.setItem(USE_MOCK_API, JSON.stringify(this.useMockApi))
+      window.localStorage.setItem(USE_MOCK_API, JSON.stringify(this.useMocks))
       window.location.reload()
     }
   }

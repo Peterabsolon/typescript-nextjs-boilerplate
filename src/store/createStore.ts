@@ -1,7 +1,7 @@
 import { configure, makeAutoObservable } from 'mobx'
 import { createContext, useContext } from 'react'
 
-import { HomeStore } from '~/containers/Home'
+import { OrderStore } from '~/containers/Order/Order.store'
 
 import { UtilsStore } from './utils'
 
@@ -11,7 +11,7 @@ class AppStore {
   utils = new UtilsStore()
 
   pages = {
-    HomeStore: new HomeStore(this.utils),
+    OrderStore: new OrderStore(this.utils),
   }
 
   constructor() {

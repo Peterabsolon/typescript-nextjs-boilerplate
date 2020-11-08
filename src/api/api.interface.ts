@@ -1,7 +1,7 @@
-import { Fact, CityWeather } from './models'
+import { Order, PalletType } from './data'
 
 export interface IApi {
-  getFacts: (count: number) => Promise<Fact[]>
-  getCityWeather: (name: string) => Promise<CityWeather>
-  someMutation: () => Promise<void>
+  getOrder: (id: number) => Promise<Order>
+  getPalletTypes: () => Promise<PalletType[]>
+  loginAdmin: (user: string, pass: string) => Promise<string>
 }

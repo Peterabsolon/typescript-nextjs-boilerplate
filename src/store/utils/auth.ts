@@ -1,8 +1,7 @@
 import { makeAutoObservable } from 'mobx'
 import axios, { AxiosInstance } from 'axios'
-import { GraphQLClient } from 'graphql-request'
 
-import { API_URL, GRAPHQL_URL } from '~/constants'
+import { API_URL } from '~/constants'
 
 export class AuthStore {
   // ====================================================
@@ -27,15 +26,11 @@ export class AuthStore {
     }
   }
 
-  get restClient(): AxiosInstance {
+  get apiClient(): AxiosInstance {
     return axios.create({
       baseURL: API_URL,
       headers: this.headers,
     })
-  }
-
-  get graphqlClient(): GraphQLClient {
-    return new GraphQLClient(GRAPHQL_URL, { headers: this.headers })
   }
 
   // ====================================================

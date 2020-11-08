@@ -3,8 +3,7 @@ import { makeAutoObservable } from 'mobx'
 import { ThemeKey, themes } from '~/constants'
 
 export class ThemeStore {
-  key: ThemeKey = 'dark'
-  authToken?: string = undefined
+  key: ThemeKey = 'light'
 
   constructor() {
     makeAutoObservable(this)
@@ -14,7 +13,7 @@ export class ThemeStore {
     return themes[this.key]
   }
 
-  toggleTheme = (): void => {
+  toggle = (): void => {
     this.key = this.key === 'light' ? 'dark' : 'light'
   }
 }

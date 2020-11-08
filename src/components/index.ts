@@ -9,5 +9,6 @@ export * from './control/Input'
 export * from './ui/Banner'
 export * from './ui/Button'
 export * from './ui/Link'
+export * from './ui/Table'
 
 // Domain specific

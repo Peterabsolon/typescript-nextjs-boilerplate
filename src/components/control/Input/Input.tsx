@@ -1,22 +1,12 @@
-import { ChangeEvent, FC } from 'react'
-import styled from 'styled-components'
+import React, { FC } from 'react'
+import { observer } from 'mobx-react-lite'
 
-const StyledInput = styled.input`
-  background: ${(props) => props.theme.colors.background};
-  border: none;
-  border-bottom: 2px solid ${(props) => props.theme.colors.gray};
-  padding: 12px 16px;
-`
+import { InputModel } from './Input.model'
 
 export interface InputProps {
-  value?: string
-  onChange: (value: string, event: ChangeEvent<HTMLInputElement>) => void
+  model: InputModel
 }
 
-export const Input: FC<InputProps> = ({ value, onChange }) => {
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    onChange(event.target.value, event)
-  }
-
-  return <StyledInput type="text" onChange={handleChange} value={value} />
-}
+export const Input: FC<InputProps> = observer(({ model }) => {
+  return <input type="text" value={model.temp} onChange={(e) => model.set(e.target.value)} />
+})

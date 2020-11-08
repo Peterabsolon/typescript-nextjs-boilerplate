@@ -11,7 +11,8 @@ const fonts = {
   body: FONT_FACE,
 }
 
-// Theme interface has to be defined in ".d.ts" file in order for styled-components to pick it up
+// Theme interface defined in ~/@types/theme.d.ts
+// styled-components picks it up from there to provide typings for props.theme
 export const themes: { [key in ThemeKey]: Theme } = {
   // ====================================================
   // Light
@@ -21,7 +22,7 @@ export const themes: { [key in ThemeKey]: Theme } = {
     fonts,
     colors: {
       ...defaults.colors,
-      background: 'white',
+      background: 'whitesmoke',
       backgroundDark: '#efefef',
       primary: '#14b5f5',
       secondary: '#74d3f9',

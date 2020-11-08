@@ -1,3 +1,3 @@
-import { HomePage } from '../containers/Home'
+import { OrderPage } from '../containers/Order'
 
-export default HomePage
+export default OrderPage
