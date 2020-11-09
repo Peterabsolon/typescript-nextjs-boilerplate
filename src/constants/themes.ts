@@ -5,7 +5,7 @@ console.log('defaults', defaults)
 export type ThemeKey = 'light' | 'dark'
 
 const FONT_FACE =
-  '-apple-system, BlinkMacSystemFont, segoe ui, Roboto, helvetica neue, Arial, noto sans, sans-serif'
+  '-apple-system, BlinkMacSystemFont, Segoe UI, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Helvetica Neue, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol'
 
 const fonts = {
   ...defaults.fonts,
@@ -18,6 +18,7 @@ const shared = {
 }
 
 const primary = '#182a61'
+const secondary = '#f47920'
 const border = '#eef1fb'
 
 // Theme interface defined in ~/@types/theme.d.ts
@@ -34,7 +35,7 @@ export const themes: { [key in ThemeKey]: Theme } = {
       backgroundLight: '#eef1fb',
       primary,
       border,
-      secondary: '#74d3f9',
+      secondary,
       text: '#333',
     },
   },
@@ -50,7 +51,7 @@ export const themes: { [key in ThemeKey]: Theme } = {
       backgroundLight: '#1b2735',
       primary,
       border,
-      secondary: 'hsl(0 0% 95% / 1)',
+      secondary,
       text: '#fff',
     },
   },

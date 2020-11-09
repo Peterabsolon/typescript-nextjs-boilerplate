@@ -3,14 +3,13 @@
 import { IApi } from './api.interface'
 import { Kit, Order, OrderItem, PalletType } from './data'
 
-const ORDER_ITEM_1_ID = '10000-01'
-const ORDER_ITEM_2_ID = '10000-02'
-
-const KIT_1_ID = '20000-01'
+const ORDER_ITEM_1_ID = 'ITEM-1'
+const ORDER_ITEM_2_ID = 'ITEM-2'
+const KIT_1_ID = 'KIT-1'
 
 export const orderItems: OrderItem[] = [
   {
-    barcode: '1-barcode',
+    barcode: `${ORDER_ITEM_1_ID}-barcode`,
     batchNo: '',
     batchNo2: '',
     buentId: 50,
@@ -28,14 +27,14 @@ export const orderItems: OrderItem[] = [
     orderLineText3: '',
     productionDate: null,
     quantity: 1,
-    scanSerialNumbers: true,
+    scanSerialNumbers: false,
     serialNumbersMaxLength: null,
     serialNumbersPattern: null,
     totalWeight: 2.187,
     unit: 'KS',
   },
   {
-    barcode: '2-barcode',
+    barcode: `${ORDER_ITEM_2_ID}-barcode`,
     batchNo: '',
     batchNo2: '',
     buentId: 51,
@@ -53,7 +52,7 @@ export const orderItems: OrderItem[] = [
     orderLineText3: '',
     productionDate: null,
     quantity: 1,
-    scanSerialNumbers: true,
+    scanSerialNumbers: false,
     serialNumbersMaxLength: null,
     serialNumbersPattern: null,
     totalWeight: 2.187,
@@ -104,7 +103,10 @@ export const order: Order = {
   kits,
 }
 
-const palletTypes: PalletType[] = [{ id: 1001, name: 'EUR', length: 3, width: 3 }]
+const palletTypes: PalletType[] = [
+  { id: 1001, name: 'EUR', length: 3, width: 3 },
+  { id: 1002, name: 'EUR-2', length: 5, width: 5 },
+]
 
 export const mockApi: IApi = {
   getOrder: () => Promise.resolve(order),

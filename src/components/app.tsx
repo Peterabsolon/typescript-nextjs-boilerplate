@@ -6,7 +6,6 @@ import { observer } from 'mobx-react-lite'
 
 import { useStore } from '~/store'
 
-import { Header } from './header'
 import { GlobalStyles, PAGE_TRANSITION_DURATION } from './globalStyles'
 
 const PAGE_PADDING = 16
@@ -43,8 +42,6 @@ export const App: FC<AppProps> = observer(({ Component, pageProps, router }) => 
       <GlobalStyles />
 
       <Wrapper background={utils.theme.theme.colors?.background}>
-        <Header />
-
         <Background color={utils.theme.theme.colors?.background}>
           {utils.appReady && (
             <PageTransition timeout={PAGE_TRANSITION_DURATION} classNames="page-transition">

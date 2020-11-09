@@ -1,9 +1,9 @@
 import { makeAutoObservable, set } from 'mobx'
+import { PalletType } from '~/api/data'
 
 export class ScannedPaletteModel {
   paletteNo: string
-
-  type: string
+  type: PalletType
 
   constructor(data: { paletteNo: string }) {
     makeAutoObservable(this)
@@ -14,7 +14,7 @@ export class ScannedPaletteModel {
     return this.paletteNo
   }
 
-  setType = (type: string): void => {
+  setType = (type: PalletType): void => {
     this.type = type
   }
 }

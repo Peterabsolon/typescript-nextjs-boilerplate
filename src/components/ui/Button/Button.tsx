@@ -4,16 +4,17 @@ import { Button as RebassButton, ButtonProps as RebassButtonProps } from 'rebass
 import styled, { css } from 'styled-components'
 
 export interface ButtonProps extends RebassButtonProps {
-  foo?: string
+  label?: string
 }
 
 const StyledRebassButton = styled(RebassButton)`
-  font-weight: 400;
-  font-size: inherit;
-  padding: 8px 10px;
-
   // override specifity
   && {
+    font-weight: 400;
+    font-size: inherit;
+    padding: 9px 10px;
+    white-space: nowrap;
+
     ${(props) => css`
       ${props.onClick &&
       css`
@@ -36,6 +37,10 @@ const StyledRebassButton = styled(RebassButton)`
   }
 ` as typeof RebassButton
 
-export const Button: FC<ButtonProps> = observer(({ type = 'button', ...props }) => (
-  <StyledRebassButton type={type} {...props} />
-))
+export const Button: FC<ButtonProps> = observer(
+  ({ type = 'button', children, label, ...props }) => (
+    <StyledRebassButton type={type} {...props}>
+      {label || children}
+    </StyledRebassButton>
+  )
+)

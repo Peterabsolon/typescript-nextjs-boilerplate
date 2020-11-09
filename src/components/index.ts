@@ -3,6 +3,7 @@ export { Box, Flex, Text } from 'rebass'
 export type { BoxProps, FlexProps, TextProps } from 'rebass'
 
 // Form controls
+export * from './control/Form'
 export * from './control/Input'
 
 // UI

@@ -1,4 +1,3 @@
-export * from './Order.model'
 export * from './OrderItem.model'
 export * from './ScannedItem.model'
 export * from './ScannedPalette.model'

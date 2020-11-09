@@ -1,3 +1,4 @@
+import { ReactNode } from 'react'
 import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 import { v4 as uuid } from 'uuid'
@@ -15,7 +16,7 @@ const StyledTable = styled.table`
 
 interface TableProps<Row> {
   rows: ({ id?: string | number } & Row)[]
-  cols: { key: keyof Row; label?: string; badge?: string }[]
+  cols: { key: keyof Row; label?: string; badge?: string; render?: (item: Row) => ReactNode }[]
 }
 
 export const Table: <Row>(props: TableProps<Row>) => React.ReactElement | null = observer(
@@ -37,9 +38,15 @@ export const Table: <Row>(props: TableProps<Row>) => React.ReactElement | null =
 
           return (
             <TableRow row={row} key={key}>
-              {cols.map((col) => (
-                <TableCell key={`${key}-${col.key}`}>{row?.[col.key]}</TableCell>
-              ))}
+              {cols.map((col) => {
+                const value = row?.[col.key]
+
+                return (
+                  <TableCell key={`${key}-${col.key}`}>
+                    {col.render ? col.render(row) : value}
+                  </TableCell>
+                )
+              })}
             </TableRow>
           )
         })}

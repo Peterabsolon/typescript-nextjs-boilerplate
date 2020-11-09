@@ -2,6 +2,8 @@ import { makeAutoObservable, set } from 'mobx'
 
 import { OrderItem } from '~/api/data'
 
+import { ScannedItemModel } from './ScannedItem.model'
+
 export class OrderItemModel implements OrderItem {
   // ====================================================
   // Model
@@ -30,7 +32,7 @@ export class OrderItemModel implements OrderItem {
   totalWeight: number
   unit: string
 
-  constructor(data: OrderItem) {
+  constructor(data: OrderItem, readonly scannedItems: ScannedItemModel[]) {
     makeAutoObservable(this)
     set(this, data)
   }
@@ -42,7 +44,21 @@ export class OrderItemModel implements OrderItem {
     return this.buentId
   }
 
+  get scanned(): number {
+    return this.scannedItems.reduce((acc, item) => {
+      if (item.itemNumber === this.itemNumber && item.kitNumber === this.kitNumber) {
+        return acc + item.quantity
+      }
+
+      return acc
+    }, 0)
+  }
+
   get remaining(): number {
-    return -this.quantity
+    return this.quantity - this.scanned
+  }
+
+  get scanningDone(): boolean {
+    return this.remaining === 0
   }
 }
