@@ -1,4 +1,4 @@
-import { makeAutoObservable, observable } from 'mobx'
+import { autorun, makeAutoObservable, observable } from 'mobx'
 
 import { Kit, Order, PalletType } from '~/api/data'
 import { UtilsStore } from '~/store/utils'
@@ -10,14 +10,20 @@ import { ScannedPaletteModel, ScannedItemModel, ScannedKitModel, OrderItemModel 
 import {
   findKit,
   findItem,
-  validatePalleteNoStep,
+  validatePalleteNo,
   findPalleteType,
-  validatePalleteTypeStep,
-  validateItemOrKitStep,
+  validatePalleteType,
+  validateItemOrKit,
+  validateKitItem,
 } from './utils'
 
 interface PalleteFormValues {
   name: string
+}
+
+interface LoginFormValues {
+  username: string
+  password: string
 }
 
 export class OrderStore {
@@ -52,9 +58,38 @@ export class OrderStore {
   // -----------------------------------
   // Scanned objects
   // -----------------------------------
+  scannedKit?: ScannedKitModel
   scannedItems = observable<ScannedItemModel>([])
   scannedPalettes = observable<ScannedPaletteModel>([])
-  scannedKit?: ScannedKitModel
+
+  // -----------------------------------
+  // Login form
+  // -----------------------------------
+  loginForm = new FormModel<LoginFormValues>({
+    fields: [
+      new InputModel({
+        name: 'username',
+        label: 'Username',
+        validate: (value) => (value.length < 3 ? 'Atleast 3...' : undefined),
+      }),
+
+      new InputModel({
+        name: 'password',
+        label: 'Password',
+        validate: (value) => (value.length < 3 ? 'Atleast 3...' : undefined),
+      }),
+    ],
+
+    onSubmit: async (values) => {
+      try {
+        const token = await this.utils.api.loginAdmin(values)
+        this.utils.auth.setToken(token)
+      } catch (e) {
+        this.utils.notification.error('Invalid credentials')
+        throw e
+      }
+    },
+  })
 
   // -----------------------------------
   // Finish pallete form
@@ -75,17 +110,33 @@ export class OrderStore {
     ],
 
     onSubmit: (values) => {
-      return Promise.resolve(console.log('submitted values', values))
+      return Promise.resolve(console.log('pallete values', values))
     },
   })
 
   constructor(private utils: UtilsStore) {
     makeAutoObservable(this)
+
+    autorun(() => {
+      if (this.input.value && this.step === 'QUANTITY' && this.scannedItem) {
+        this.scannedItem.setTempQuantity(Number(this.input.value))
+      }
+    })
+
+    autorun(() => {
+      if (this.scannedKit?.scanningDone) {
+        this.setStep(Step.KIT_DONE)
+      }
+    })
   }
 
   // ====================================================
   // Memoized views
   // ====================================================
+
+  // -----------------------------------
+  // Order data getters
+  // -----------------------------------
   get isPlantronics(): boolean {
     return Boolean(this.order?.client === 'Plantronics')
   }
@@ -102,6 +153,28 @@ export class OrderStore {
     return this.kits.map((kit) => kit.kitNumber)
   }
 
+  get matchingOrderItems(): OrderItemModel[] {
+    return findItem(this.orderItems, this.input.value, this.scannedKit)
+  }
+
+  get matchingKitOrderItems(): OrderItemModel[] {
+    if (!this.scannedKit) return []
+    return findItem(this.scannedKit.orderItems, this.input.value, this.scannedKit)
+  }
+
+  get matchingOrderItem(): OrderItemModel | undefined {
+    return this.matchingOrderItems[0]
+  }
+
+  get isValid(): boolean {
+    const orderValid = this.orderItems.every((item) => item.isTempRemainingValid)
+    const kitValid = this.scannedKit?.orderItems.every((item) => item.isTempRemainingValid) ?? true
+    return orderValid && kitValid
+  }
+
+  // -----------------------------------
+  // Scanned data getters
+  // -----------------------------------
   get scannedPallete(): ScannedPaletteModel | undefined {
     if (!this.scannedPalettes.length) return undefined
     return this.scannedPalettes[this.scannedPalettes.length - 1]
@@ -113,18 +186,24 @@ export class OrderStore {
 
   get scannedItem(): ScannedItemModel | undefined {
     if (!this.hasScannedItems) return undefined
-    return this.scannedItems[this.scannedItems.length - 1]
+
+    const item = this.scannedItems[this.scannedItems.length - 1]
+
+    return item.saved ? undefined : item
   }
 
-  get canStart(): boolean {
+  // -----------------------------------
+  // Flow logic
+  // -----------------------------------
+  get canStartScanning(): boolean {
     return Boolean(this.order) && !this.scanning && !this.hasScannedItems
   }
 
-  get canConfirm(): boolean {
+  get canConfirmOrder(): boolean {
     return Boolean(this.scannedItems.length) && this.orderItems.every((item) => item.scanningDone)
   }
 
-  get canCorrect(): boolean {
+  get canCorrectOrder(): boolean {
     return this.hasScannedItems
   }
 
@@ -132,8 +211,12 @@ export class OrderStore {
     return this.hasScannedItems
   }
 
-  get inputVisible(): boolean {
-    return this.step !== 'ORDER_NO' && this.scanning
+  get canScanCode(): boolean {
+    return this.step !== 'ORDER_NO' && this.step !== 'KIT_DONE' && this.scanning
+  }
+
+  get canFinishPackage(): boolean {
+    return this.step === 'KIT_DONE'
   }
 
   get stepHint(): string {
@@ -145,13 +228,13 @@ export class OrderStore {
   }
 
   get stepError(): string {
-    if (!this.input.value) {
+    if (this.input.pristine) {
       return ''
     }
 
     switch (this.step) {
       case 'PALETT_NO':
-        return validatePalleteNoStep(
+        return validatePalleteNo(
           this.input.value,
           this.barCodes,
           this.kitNumbers,
@@ -161,10 +244,18 @@ export class OrderStore {
         )
 
       case 'PALETT_TYPE':
-        return validatePalleteTypeStep(this.input.value, this.palleteTypes)
+        return validatePalleteType(this.input.value, this.palleteTypes)
 
       case 'ITEM_OR_KIT':
-        return validateItemOrKitStep(this.input.value, this.orderItems, this.kits, this.scannedKit)
+      case 'NEXT_ITEM_OR_KIT':
+        return validateItemOrKit(this.input.value, this.orderItems, this.kits, this.scannedKit)
+
+      case 'KIT_ITEM':
+      case 'NEXT_KIT_ITEM':
+        return validateKitItem(this.input.value, this.scannedKit)
+
+      case 'QUANTITY':
+        return this.isValid ? '' : 'Too many'
 
       default:
         return ''
@@ -189,7 +280,7 @@ export class OrderStore {
   }
 
   setKit = (kit: Kit): void => {
-    this.scannedKit = new ScannedKitModel(kit, this.orderItems)
+    this.scannedKit = new ScannedKitModel(kit, this.scannedItems)
   }
 
   addPallete = (paletteNo: string): void => {
@@ -292,16 +383,28 @@ export class OrderStore {
           break
         }
 
-        const item = findItem(this.orderItems, value)
-        if (item) {
-          this.addItem(item)
-          this.setStep(item.scanSerialNumbers ? Step.SERIAL_NUMBERS : Step.QUANTITY)
+        if (this.matchingOrderItem) {
+          const step = this.matchingOrderItem.scanSerialNumbers
+            ? Step.SERIAL_NUMBERS
+            : Step.QUANTITY
+
+          this.addItem(this.matchingOrderItem)
+          this.setStep(step)
         }
         break
       }
 
       case 'KIT_ITEM':
       case 'NEXT_KIT_ITEM': {
+        if (this.scannedKit) {
+          const [item] = findItem(this.scannedKit.orderItems, value, this.scannedKit)
+
+          if (item) {
+            this.addItem(item)
+            this.setStep(item.scanSerialNumbers ? Step.SERIAL_NUMBERS : Step.QUANTITY)
+          }
+        }
+
         // is part of a kit
 
         break
@@ -309,7 +412,7 @@ export class OrderStore {
 
       case 'QUANTITY': {
         if (this.scannedItem) {
-          this.scannedItem.setQuantity(Number(value))
+          this.scannedItem.save()
           this.setStep(this.scannedKit ? Step.NEXT_KIT_ITEM : Step.NEXT_ITEM_OR_KIT)
         }
         break
@@ -333,11 +436,15 @@ export class OrderStore {
   }
 
   onConfirm = (): void => {
-    console.log('confirm pallete...')
+    this.palleteForm.open()
+  }
+
+  onFinishPackage = (): void => {
+    alert('finish package...')
   }
 
   onFinishPallete = (): void => {
-    console.log('finish pallete...')
+    alert('finish pallete...')
   }
 
   onStartScanning = (): void => {

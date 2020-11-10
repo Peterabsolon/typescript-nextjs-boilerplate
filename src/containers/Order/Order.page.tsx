@@ -2,7 +2,7 @@ import React, { FC, useEffect } from 'react'
 import { observer } from 'mobx-react-lite'
 import styled from 'styled-components'
 
-import { Kit, PalletType } from '~/api/data'
+import { Kit } from '~/api/data'
 import { Button, Heading, Table, Text, Flex, Box, Form } from '~/components'
 import { useStore } from '~/store'
 
@@ -15,24 +15,32 @@ const ScanningForm = styled.div``
 
 export const OrderPage: FC = observer(() => {
   const {
-    canConfirm,
+    canConfirmOrder,
+    canFinishPackage,
     canFinishPallete,
-    canStart,
+    canScanCode,
+    canStartScanning,
     input,
-    inputVisible,
     kits,
+    loginForm,
+    matchingKitOrderItems,
+    matchingOrderItems,
     mountPage,
     onConfirm,
+    onFinishPackage,
     onFinishPallete,
     onStartScanning,
     orderItems,
-    palleteTypes,
+    palleteForm,
     scannedItems,
+    scannedKit,
     scannedPalettes,
+    stepError,
     stepHint,
     unmountPage,
-    palleteForm,
   } = useStore().pages.OrderStore
+
+  console.log('matchingKitOrderItems', matchingKitOrderItems)
 
   useEffect(() => {
     mountPage()
@@ -45,8 +53,32 @@ export const OrderPage: FC = observer(() => {
 
       <Form model={palleteForm} />
 
-      <Flex>
-        <Box width="34%">
+      <Form model={loginForm} />
+
+      <Flex justifyContent="space-between">
+        <Box width="33%">
+          {scannedKit && (
+            <>
+              <Heading mt={3}>Naskenovaný kit ({scannedKit.kitNumber})</Heading>
+              <Table<OrderItemModel>
+                rows={scannedKit.orderItems}
+                rowHighlighted={(row) => matchingKitOrderItems.includes(row)}
+                cols={[
+                  { key: 'itemNumber', label: 'Item No' },
+                  { key: 'description', label: 'Description' },
+                  { key: 'quantity', label: 'Qty' },
+                  { key: 'scanned', label: 'Scanned' },
+                  {
+                    key: 'remaining',
+                    label: 'Remain',
+                    render: (row) => -row.remaining,
+                    highlighted: (row) => !row.scanningDone,
+                  },
+                ]}
+              />
+            </>
+          )}
+
           {scannedItems.length > 0 && (
             <>
               <Heading mt={3}>Naskenované položky ({scannedItems.length})</Heading>
@@ -65,9 +97,6 @@ export const OrderPage: FC = observer(() => {
         </Box>
 
         <Box width="64%">
-          <Heading mt={3}>Typ paliet</Heading>
-          <Table<PalletType> rows={palleteTypes} cols={[{ key: 'name', label: 'Name' }]} />
-
           <Heading mt={3}>Naskenované palety ({scannedPalettes.length})</Heading>
           <Table<ScannedPaletteModel>
             rows={scannedPalettes}
@@ -77,6 +106,7 @@ export const OrderPage: FC = observer(() => {
           <Heading>Položky objednávky ({orderItems.length})</Heading>
           <Table<OrderItemModel>
             rows={orderItems}
+            rowHighlighted={(row) => !scannedKit && matchingOrderItems.includes(row)}
             cols={[
               { key: 'itemNumber', label: 'Item No' },
               { key: 'barcode', label: 'Barcode' },
@@ -84,25 +114,32 @@ export const OrderPage: FC = observer(() => {
               { key: 'quantity', label: 'Qty' },
               { key: 'unit', label: 'Unit' },
               { key: 'scanned', label: 'Scanned' },
-              { key: 'remaining', label: 'Remain', render: (row) => -row.remaining },
+              {
+                key: 'remaining',
+                label: 'Remain',
+                render: (row) => -row.remaining,
+                highlighted: (row) => !row.scanningDone,
+              },
               { key: 'name2', label: 'Name' },
               { key: 'description', label: 'Description' },
             ]}
           />
 
-          <Heading>Kity objednávky</Heading>
-          <Table<Kit>
-            rows={kits.map((kit) => ({ ...kit, id: kit.kitNumber }))}
-            cols={[
-              { key: 'kitNumber', label: 'Kit No' },
-              { key: 'kitQuantity', label: 'Qty' },
-            ]}
-          />
+          <div style={{ opacity: 0.5 }}>
+            <Heading>Kity objednávky</Heading>
+            <Table<Kit>
+              rows={kits.map((kit) => ({ ...kit, id: kit.kitNumber }))}
+              cols={[
+                { key: 'kitNumber', label: 'Kit No' },
+                { key: 'kitQuantity', label: 'Qty' },
+              ]}
+            />
+          </div>
         </Box>
       </Flex>
 
       <Controls>
-        <Button variant="primary" disabled={!canStart} onClick={onStartScanning} mr={1}>
+        <Button variant="primary" disabled={!canStartScanning} onClick={onStartScanning} mr={1}>
           Start
         </Button>
 
@@ -110,7 +147,11 @@ export const OrderPage: FC = observer(() => {
           Finish pallete
         </Button>
 
-        <Button variant="primary" disabled={!canConfirm} onClick={onConfirm} mr={1}>
+        <Button variant="primary" disabled={!canFinishPackage} onClick={onFinishPackage} mr={1}>
+          Finish package
+        </Button>
+
+        <Button variant="primary" disabled={!canConfirmOrder} onClick={onConfirm} mr={1}>
           Confirm
         </Button>
       </Controls>
@@ -118,7 +159,9 @@ export const OrderPage: FC = observer(() => {
       <ScanningForm>
         <Text mt={3}>{stepHint}</Text>
 
-        {inputVisible && <div>{input.jsx}</div>}
+        {canScanCode && <div>{input.jsx}</div>}
+
+        {stepError}
       </ScanningForm>
     </>
   )

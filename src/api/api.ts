@@ -13,9 +13,9 @@ export const createApi = (useMocks: boolean, axios: AxiosInstance): IApi => {
   // prettier-ignore
   return {
     // Auth
-    loginAdmin: (username, password) => axios.post('/api/authorization/token', { username, password }).then(r => r.data),
+    loginAdmin: (creds) => axios.post('/api/authorization/token', creds).then(r => r.data),
 
-    // Common
+    // Enums
     getPalletTypes: () => axios.get('/api/common/pallettypes').then(r => r.data),
 
     // Packing

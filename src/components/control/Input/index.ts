@@ -1,2 +1,2 @@
-export * from './Input.element'
-export * from './Input.model'
+export * from './Input.component'
+export * from './Input'

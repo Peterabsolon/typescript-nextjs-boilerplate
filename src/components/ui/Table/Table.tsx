@@ -13,14 +13,26 @@ const StyledTable = styled.table`
   margin-bottom: 13px;
   width: 100%;
 `
+export interface ColProps<Row> {
+  key: keyof Row
+  label?: string
+  badge?: string
+  render?: (row: Row) => ReactNode
+  highlighted?: (row: Row) => boolean
+}
 
 interface TableProps<Row> {
   rows: ({ id?: string | number } & Row)[]
-  cols: { key: keyof Row; label?: string; badge?: string; render?: (item: Row) => ReactNode }[]
+  rowHighlighted?: (row: Row) => boolean
+  cols: ColProps<Row>[]
 }
 
-export const Table: <Row>(props: TableProps<Row>) => React.ReactElement | null = observer(
-  ({ rows, cols }) => (
+export const Table = observer(
+  <Row extends IAnyObject>({
+    rows,
+    rowHighlighted,
+    cols,
+  }: TableProps<Row>): React.ReactElement | null => (
     <StyledTable>
       <thead>
         <tr>
@@ -37,16 +49,19 @@ export const Table: <Row>(props: TableProps<Row>) => React.ReactElement | null =
           const key = row.id || uuid()
 
           return (
-            <TableRow row={row} key={key}>
-              {cols.map((col) => {
-                const value = row?.[col.key]
-
-                return (
-                  <TableCell key={`${key}-${col.key}`}>
-                    {col.render ? col.render(row) : value}
-                  </TableCell>
-                )
-              })}
+            <TableRow
+              key={key}
+              row={row}
+              highlighted={typeof rowHighlighted === 'function' && rowHighlighted(row)}
+            >
+              {cols.map((col) => (
+                <TableCell
+                  key={`${key}-${col.key}`}
+                  highlighted={typeof col.highlighted === 'function' && col.highlighted(row)}
+                >
+                  {col.render ? col.render(row) : row?.[col.key]}
+                </TableCell>
+              ))}
             </TableRow>
           )
         })}

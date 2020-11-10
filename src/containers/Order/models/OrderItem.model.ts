@@ -32,7 +32,7 @@ export class OrderItemModel implements OrderItem {
   totalWeight: number
   unit: string
 
-  constructor(data: OrderItem, readonly scannedItems: ScannedItemModel[]) {
+  constructor(data: Partial<OrderItem>, readonly scannedItems: ScannedItemModel[]) {
     makeAutoObservable(this)
     set(this, data)
   }
@@ -54,8 +54,26 @@ export class OrderItemModel implements OrderItem {
     }, 0)
   }
 
+  get scannedTemp(): number {
+    return this.scannedItems.reduce((acc, item) => {
+      if (item.itemNumber === this.itemNumber && item.kitNumber === this.kitNumber) {
+        return acc + item.quantityTemp
+      }
+
+      return acc
+    }, 0)
+  }
+
   get remaining(): number {
     return this.quantity - this.scanned
+  }
+
+  get remainingTemp(): number {
+    return this.quantity - this.scannedTemp
+  }
+
+  get isTempRemainingValid(): boolean {
+    return this.remainingTemp >= 0
   }
 
   get scanningDone(): boolean {

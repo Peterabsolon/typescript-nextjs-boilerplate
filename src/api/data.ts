@@ -37,7 +37,7 @@ export interface OrderItem {
   expiryDate: string
   isKit: boolean // is part of a kit
   itemNumber: string
-  kitNumber: string // kit identifier
+  kitNumber: string | null // kit identifier
   kitQuantity: string // count of kits
   lineNumberReference: string
   name2: string

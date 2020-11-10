@@ -5,6 +5,7 @@ import { Kit, Order, OrderItem, PalletType } from './data'
 
 const ORDER_ITEM_1_ID = 'ITEM-1'
 const ORDER_ITEM_2_ID = 'ITEM-2'
+const ORDER_ITEM_3_ID = 'ITEM-3'
 const KIT_1_ID = 'KIT-1'
 
 export const orderItems: OrderItem[] = [
@@ -58,13 +59,41 @@ export const orderItems: OrderItem[] = [
     totalWeight: 2.187,
     unit: 'KS',
   },
+  {
+    barcode: `${ORDER_ITEM_3_ID}-barcode`,
+    batchNo: '',
+    batchNo2: '',
+    buentId: 52,
+    client: 'Plantronics',
+    customs: null,
+    description: 'Battery',
+    expiryDate: '',
+    isKit: false,
+    itemNumber: ORDER_ITEM_3_ID,
+    kitNumber: null,
+    kitQuantity: '',
+    lineNumberReference: '1',
+    name2: 'Battery',
+    netWeight: 2.187,
+    orderLineText3: '',
+    productionDate: null,
+    quantity: 1,
+    scanSerialNumbers: false,
+    serialNumbersMaxLength: null,
+    serialNumbersPattern: null,
+    totalWeight: 2.187,
+    unit: 'KS',
+  },
 ]
 
 export const kits: Kit[] = [
   {
     kitNumber: KIT_1_ID,
     kitQuantity: 2,
-    items: [{ itemNumber: ORDER_ITEM_1_ID, quantity: 1 }],
+    items: [
+      { itemNumber: ORDER_ITEM_1_ID, quantity: 1 },
+      { itemNumber: ORDER_ITEM_2_ID, quantity: 1 },
+    ],
   },
 ]
 

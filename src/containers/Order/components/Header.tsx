@@ -52,7 +52,12 @@ export const Header = observer(() => {
             <Flex alignItems="center" justifyContent="center">
               <OrderNumberInput model={orderNumberInput} />
 
-              <Button variant="secondary" onClick={loadOrder} disabled={!orderNumberInput.value}>
+              <Button
+                variant="secondary"
+                onClick={loadOrder}
+                disabled={!orderNumberInput.value}
+                width={170}
+              >
                 Načíst objednávku
               </Button>
             </Flex>
@@ -64,7 +69,7 @@ export const Header = observer(() => {
             {utils.useMocks ? 'Disable' : 'Enable'} mocks
           </Button> */}
 
-              <Button onClick={utils.auth.login} variant="primary">
+              <Button onClick={pages.OrderStore.loginForm.open} variant="primary">
                 {utils.auth.loggedIn
                   ? 'Ukončit režim administrátora'
                   : 'Přihlásit se jako administátor'}

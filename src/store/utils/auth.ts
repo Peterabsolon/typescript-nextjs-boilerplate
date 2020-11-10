@@ -20,13 +20,11 @@ export class AuthStore {
   // ====================================================
   // Actions
   // ====================================================
-  login = (): Promise<void> => {
-    this.token = '123'
-    return Promise.resolve()
+  setToken = (token: string): void => {
+    this.token = token
   }
 
-  logout = (): Promise<void> => {
+  clear = (): void => {
     this.token = undefined
-    return Promise.resolve()
   }
 }

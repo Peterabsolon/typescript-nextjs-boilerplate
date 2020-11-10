@@ -3,7 +3,7 @@ import { autorun, makeAutoObservable } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { v4 as uuid } from 'uuid'
 
-import { InputElement } from './Input.element'
+import { InputComponent, InputComponentProps } from './Input.component'
 
 type Validator = (value: string) => string | undefined
 
@@ -57,6 +57,10 @@ export class InputModel {
     return Boolean(!this.error)
   }
 
+  get pristine(): boolean {
+    return this.state === ''
+  }
+
   get jsx(): JSX.Element {
     return <Input model={this} {...this.props} />
   }
@@ -96,27 +100,20 @@ export class InputModel {
 // ====================================================
 // Component
 // ====================================================
-export interface InputProps {
-  label?: string
-  className?: string
+export interface InputProps extends Omit<InputComponentProps, 'value' | 'onChange'> {
   model: InputModel
 }
 
-export const Input: FC<InputProps> = observer(({ className, model, label }) => {
+export const Input: FC<InputProps> = observer(({ model, ...props }) => {
   return (
-    <div>
-      {label}
-
-      <InputElement
-        className={className}
-        type="text"
-        value={model.state}
-        onChange={(e) => model.set(e.target.value)}
-        onBlur={model.blur}
-        onFocus={model.focus}
-      />
-
-      {model.touched && model.error}
-    </div>
+    <InputComponent
+      {...props}
+      onBlur={model.blur}
+      onFocus={model.focus}
+      error={model.error}
+      touched={model.touched}
+      value={model.state}
+      onChange={model.set}
+    />
   )
 })

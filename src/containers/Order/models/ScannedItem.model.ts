@@ -11,12 +11,20 @@ export class ScannedItemModel implements Partial<OrderItem> {
   unit: string
   customs: string | null
 
+  quantityTemp = 0
+  saved = false
+
   constructor(data: OrderItem & { palletNo: string }) {
     makeAutoObservable(this)
     set(this, data)
   }
 
-  setQuantity = (qty: number): void => {
-    this.quantity = qty
+  setTempQuantity = (qty: number): void => {
+    this.quantityTemp = Number.isNaN(qty) ? 999999999 : qty
+  }
+
+  save = (): void => {
+    this.quantity = this.quantityTemp
+    this.saved = true
   }
 }
